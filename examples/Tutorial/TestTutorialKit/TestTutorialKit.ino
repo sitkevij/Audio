@@ -7,8 +7,10 @@
 //  2: listen for SD card playing  (any button press moves to #2)
 //  3: test 3 buttons and 3 knobs  (press all 3 buttons to go back to step #1)
 //
-// After test is completed, EEPROM storage is used to remember the hardware is good
-// Good hardware will begin at #3, which corresponds to the first tutorial example
+// After test is completed, EEPROM storage is used to remember the hardware is
+// good
+// Good hardware will begin at #3, which corresponds to the first tutorial
+// example
 
 #include <Audio.h>
 #include <SD.h>
@@ -22,33 +24,33 @@
 #include "AudioSampleKnob3.h"
 #include "AudioSampleNosdcard.h"
 
-AudioInputI2S         i2s1;
-AudioSynthWaveform    waveform1;
-AudioPlaySdWav        playSdWav1;
-AudioPlayMemory       sample1;
-AudioMixer4           mixer1;
-AudioMixer4           mixer2;
-AudioOutputI2S        i2s2;
-AudioConnection       patchCord1(i2s1, 0, mixer1, 0);
-AudioConnection       patchCord2(i2s1, 0, mixer2, 0);
-AudioConnection       patchCord3(playSdWav1, 0, mixer1, 1);
-AudioConnection       patchCord4(playSdWav1, 1, mixer2, 1);
-AudioConnection       patchCord5(waveform1, 0, mixer1, 2);
-AudioConnection       patchCord6(waveform1, 0, mixer2, 2);
-AudioConnection       patchCord7(sample1, 0, mixer1, 3);
-AudioConnection       patchCord8(sample1, 0, mixer2, 3);
-AudioConnection       patchCord9(mixer1, 0, i2s2, 0);
-AudioConnection       patchCordA(mixer2, 0, i2s2, 1);
-AudioControlSGTL5000  sgtl5000_1;
+AudioInputI2S i2s1;
+AudioSynthWaveform waveform1;
+AudioPlaySdWav playSdWav1;
+AudioPlayMemory sample1;
+AudioMixer4 mixer1;
+AudioMixer4 mixer2;
+AudioOutputI2S i2s2;
+AudioConnection patchCord1(i2s1, 0, mixer1, 0);
+AudioConnection patchCord2(i2s1, 0, mixer2, 0);
+AudioConnection patchCord3(playSdWav1, 0, mixer1, 1);
+AudioConnection patchCord4(playSdWav1, 1, mixer2, 1);
+AudioConnection patchCord5(waveform1, 0, mixer1, 2);
+AudioConnection patchCord6(waveform1, 0, mixer2, 2);
+AudioConnection patchCord7(sample1, 0, mixer1, 3);
+AudioConnection patchCord8(sample1, 0, mixer2, 3);
+AudioConnection patchCord9(mixer1, 0, i2s2, 0);
+AudioConnection patchCordA(mixer2, 0, i2s2, 1);
+AudioControlSGTL5000 sgtl5000_1;
 
 Bounce button0 = Bounce(0, 15);
 Bounce button1 = Bounce(1, 15);
 Bounce button2 = Bounce(2, 15);
 
 // Use these with the Teensy Audio Shield
-#define SDCARD_CS_PIN    10
-#define SDCARD_MOSI_PIN  7
-#define SDCARD_SCK_PIN   14
+#define SDCARD_CS_PIN 10
+#define SDCARD_MOSI_PIN 7
+#define SDCARD_SCK_PIN 14
 
 // Use these with the Teensy 3.5 & 3.6 SD card
 //#define SDCARD_CS_PIN    BUILTIN_SDCARD
@@ -61,11 +63,11 @@ Bounce button2 = Bounce(2, 15);
 //#define SDCARD_SCK_PIN   13
 
 int mode;
-int count=1;
-int a1=0, a2=0, a3=0;
-bool anybutton=false;
-bool sdcardinit=true;
-bool playsamples=false;
+int count = 1;
+int a1 = 0, a2 = 0, a3 = 0;
+bool anybutton = false;
+bool sdcardinit = true;
+bool playsamples = false;
 
 void setup() {
   mode = EEPROM.read(400);
@@ -99,8 +101,8 @@ void setup() {
 }
 
 void update() {
-  static int state=0;
-  
+  static int state = 0;
+
   button0.update();
   button1.update();
   button2.update();
@@ -159,7 +161,7 @@ void update() {
   }
 }
 
-elapsedMillis msec=0;
+elapsedMillis msec = 0;
 
 void loop() {
   update();
@@ -185,14 +187,14 @@ void loop() {
       mode = 123;
     }
 
-  // Play WAV file (test SD card, sound quality)
-  } else if (mode == 123) {  
+    // Play WAV file (test SD card, sound quality)
+  } else if (mode == 123) {
     mixer1.gain(1, 0.75);
     mixer2.gain(1, 0.75);
     if (playSdWav1.isPlaying() == false) {
       Serial.println("Start playing");
       playSdWav1.play("SDTEST2.WAV");
-      delay(10); // wait for library to parse WAV info
+      delay(10);  // wait for library to parse WAV info
     }
     if (anybutton) {
       playSdWav1.stop();
@@ -201,8 +203,8 @@ void loop() {
       mode = 45;
       EEPROM.write(400, mode);
     }
-      
-  // Beeping (test buttons & knobs)
+
+    // Beeping (test buttons & knobs)
   } else {
     mixer1.gain(2, 1.0);
     mixer2.gain(2, 1.0);
@@ -225,13 +227,11 @@ void loop() {
         mode = 45;
       }
     }
-    if (button0.read() == LOW && button1.read() == LOW && button2.read() == LOW) {
+    if (button0.read() == LOW && button1.read() == LOW &&
+        button2.read() == LOW) {
       mixer1.gain(2, 0);
       mixer2.gain(2, 0);
       mode = 255;
     }
   }
 }
-
-
-

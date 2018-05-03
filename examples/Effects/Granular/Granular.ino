@@ -17,16 +17,16 @@
 #include <SerialFlash.h>
 #include <Bounce.h>
 
-AudioPlaySdWav           playSdWav1;     //xy=163,135
-AudioMixer4              mixer1;         //xy=332,167
-AudioEffectGranular      granular1;      //xy=504,155
-AudioOutputI2S           i2s1;           //xy=664,185
-AudioConnection          patchCord1(playSdWav1, 0, mixer1, 0);
-AudioConnection          patchCord2(playSdWav1, 1, mixer1, 1);
-AudioConnection          patchCord3(mixer1, granular1);
-AudioConnection          patchCord4(granular1, 0, i2s1, 0);
-AudioConnection          patchCord5(granular1, 0, i2s1, 1);
-AudioControlSGTL5000     sgtl5000_1;     //xy=236,248
+AudioPlaySdWav playSdWav1;      // xy=163,135
+AudioMixer4 mixer1;             // xy=332,167
+AudioEffectGranular granular1;  // xy=504,155
+AudioOutputI2S i2s1;            // xy=664,185
+AudioConnection patchCord1(playSdWav1, 0, mixer1, 0);
+AudioConnection patchCord2(playSdWav1, 1, mixer1, 1);
+AudioConnection patchCord3(mixer1, granular1);
+AudioConnection patchCord4(granular1, 0, i2s1, 0);
+AudioConnection patchCord5(granular1, 0, i2s1, 1);
+AudioControlSGTL5000 sgtl5000_1;  // xy=236,248
 
 Bounce button0 = Bounce(0, 15);
 Bounce button1 = Bounce(1, 15);
@@ -36,9 +36,9 @@ Bounce button2 = Bounce(2, 15);
 int16_t granularMemory[GRANULAR_MEMORY_SIZE];
 
 // Use these with the Teensy Audio Shield
-#define SDCARD_CS_PIN    10
-#define SDCARD_MOSI_PIN  7
-#define SDCARD_SCK_PIN   14
+#define SDCARD_CS_PIN 10
+#define SDCARD_MOSI_PIN 7
+#define SDCARD_SCK_PIN 14
 
 // Use these with the Teensy 3.5 & 3.6 SD card
 //#define SDCARD_CS_PIN    BUILTIN_SDCARD
@@ -50,9 +50,10 @@ int16_t granularMemory[GRANULAR_MEMORY_SIZE];
 //#define SDCARD_MOSI_PIN  11
 //#define SDCARD_SCK_PIN   13
 
-#define NUM_FILES  4
-const char *filenames[NUM_FILES]={"SDTEST1.WAV", "SDTEST2.WAV", "SDTEST3.WAV", "SDTEST4.WAV"};
-int nextfile=0;
+#define NUM_FILES 4
+const char *filenames[NUM_FILES] = {"SDTEST1.WAV", "SDTEST2.WAV", "SDTEST3.WAV",
+                                    "SDTEST4.WAV"};
+int nextfile = 0;
 
 void setup() {
   Serial.begin(9600);
@@ -88,7 +89,7 @@ void loop() {
     playSdWav1.play(filenames[nextfile]);
     Serial.print("Playing: ");
     Serial.println(filenames[nextfile]);
-    delay(5); // brief delay for the library read WAV info
+    delay(5);  // brief delay for the library read WAV info
     nextfile = nextfile + 1;
     if (nextfile >= NUM_FILES) {
       nextfile = 0;
@@ -129,7 +130,8 @@ void loop() {
 
   // Continuously adjust the speed, based on the A3 pot
   float ratio;
-  ratio = powf(2.0, knobA2 * 2.0 - 1.0); // 0.5 to 2.0
-  //ratio = powf(2.0, knobA2 * 6.0 - 3.0); // 0.125 to 8.0 -- uncomment for far too much range!
+  ratio = powf(2.0, knobA2 * 2.0 - 1.0);  // 0.5 to 2.0
+  // ratio = powf(2.0, knobA2 * 6.0 - 3.0); // 0.125 to 8.0 -- uncomment for far
+  // too much range!
   granular1.setSpeed(ratio);
 }

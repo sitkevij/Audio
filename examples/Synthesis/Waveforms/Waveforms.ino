@@ -25,21 +25,21 @@
 #include <SerialFlash.h>
 #include <Bounce.h>
 
-AudioSynthWaveform       waveform1;      //xy=171,84
-AudioSynthWaveform       waveform2;      //xy=178,148
-AudioOutputI2S           i2s1;           //xy=360,98
-AudioOutputAnalogStereo  dacs1;          //xy=372,173
-AudioConnection          patchCord1(waveform1, 0, i2s1, 0);
-AudioConnection          patchCord2(waveform1, 0, dacs1, 0);
-AudioConnection          patchCord3(waveform2, 0, i2s1, 1);
-AudioConnection          patchCord4(waveform2, 0, dacs1, 1);
-AudioControlSGTL5000     sgtl5000_1;     //xy=239,232
+AudioSynthWaveform waveform1;   // xy=171,84
+AudioSynthWaveform waveform2;   // xy=178,148
+AudioOutputI2S i2s1;            // xy=360,98
+AudioOutputAnalogStereo dacs1;  // xy=372,173
+AudioConnection patchCord1(waveform1, 0, i2s1, 0);
+AudioConnection patchCord2(waveform1, 0, dacs1, 0);
+AudioConnection patchCord3(waveform2, 0, i2s1, 1);
+AudioConnection patchCord4(waveform2, 0, dacs1, 1);
+AudioControlSGTL5000 sgtl5000_1;  // xy=239,232
 
 Bounce button0 = Bounce(0, 15);
 Bounce button1 = Bounce(1, 15);
 Bounce button2 = Bounce(2, 15);
 
-int current_waveform=0;
+int current_waveform = 0;
 
 extern const int16_t myWaveform[256];  // defined in myWaveform.ino
 
@@ -57,7 +57,7 @@ void setup() {
   // This may wait forever if the SDA & SCL pins lack
   // pullup resistors
   sgtl5000_1.enable();
-  sgtl5000_1.volume(0.8); // caution: very loud - use oscilloscope only!
+  sgtl5000_1.volume(0.8);  // caution: very loud - use oscilloscope only!
 
   // Confirgure both to use "myWaveform" for WAVEFORM_ARBITRARY
   waveform1.arbitraryWaveform(myWaveform, 172.0);
@@ -134,6 +134,4 @@ void loop() {
     waveform2.begin(WAVEFORM_SINE);
     AudioInterrupts();
   }
-  
 }
-

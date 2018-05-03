@@ -37,22 +37,23 @@
 #include <Wire.h>
 
 // ILI9341 Color TFT Display connections
-#define TFT_DC      20
-#define TFT_CS      21
-#define TFT_RST    255  // 255 = unused, connect to 3.3V
-#define TFT_MOSI     7
-#define TFT_SCLK    14
-#define TFT_MISO    12
+#define TFT_DC 20
+#define TFT_CS 21
+#define TFT_RST 255  // 255 = unused, connect to 3.3V
+#define TFT_MOSI 7
+#define TFT_SCLK 14
+#define TFT_MISO 12
 
-ILI9341_t3 tft = ILI9341_t3(TFT_CS, TFT_DC, TFT_RST, TFT_MOSI, TFT_SCLK, TFT_MISO);
+ILI9341_t3 tft =
+    ILI9341_t3(TFT_CS, TFT_DC, TFT_RST, TFT_MOSI, TFT_SCLK, TFT_MISO);
 
-AudioInputI2S            i2s1;
-AudioOutputI2S           i2s2;
-AudioAnalyzeFFT1024      fft1024_1;
-AudioConnection          patchCord5(i2s1, 0, i2s2, 0);
-AudioConnection          patchCord6(i2s1, 0, i2s2, 1);
-AudioConnection          patchCord7(i2s1, fft1024_1);
-AudioControlSGTL5000     sgtl5000_1;
+AudioInputI2S i2s1;
+AudioOutputI2S i2s2;
+AudioAnalyzeFFT1024 fft1024_1;
+AudioConnection patchCord5(i2s1, 0, i2s2, 0);
+AudioConnection patchCord6(i2s1, 0, i2s2, 1);
+AudioConnection patchCord7(i2s1, fft1024_1);
+AudioControlSGTL5000 sgtl5000_1;
 
 static int count = 0;
 static uint16_t line_buffer[320];
@@ -101,7 +102,7 @@ void loop() {
     for (int i = 0; i < 240; i++) {
       line_buffer[240 - i - 1] = colorMap(fft1024_1.output[i]);
     }
-    tft.writeRect(0, count, 240, 1, (uint16_t*) &line_buffer);
+    tft.writeRect(0, count, 240, 1, (uint16_t*)&line_buffer);
     tft.setScroll(count++);
     count = count % 320;
   }
@@ -124,5 +125,3 @@ uint16_t colorMap(uint16_t val) {
   }
   return tft.color565(red * 256, green * 256, blue * 256);
 }
-
-

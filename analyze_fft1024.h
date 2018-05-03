@@ -13,7 +13,8 @@
  * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice, development funding notice, and this permission
- * notice shall be included in all copies or substantial portions of the Software.
+ * notice shall be included in all copies or substantial portions of the
+ *Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -46,58 +47,59 @@ extern const int16_t AudioWindowCosine1024[];
 extern const int16_t AudioWindowTukey1024[];
 }
 
-class AudioAnalyzeFFT1024 : public AudioStream
-{
-public:
-	AudioAnalyzeFFT1024() : AudioStream(1, inputQueueArray),
-	  window(AudioWindowHanning1024), state(0), outputflag(false) {
-		arm_cfft_radix4_init_q15(&fft_inst, 1024, 0, 1);
-	}
-	bool available() {
-		if (outputflag == true) {
-			outputflag = false;
-			return true;
-		}
-		return false;
-	}
-	float read(unsigned int binNumber) {
-		if (binNumber > 511) return 0.0;
-		return (float)(output[binNumber]) * (1.0 / 16384.0);
-	}
-	float read(unsigned int binFirst, unsigned int binLast) {
-		if (binFirst > binLast) {
-			unsigned int tmp = binLast;
-			binLast = binFirst;
-			binFirst = tmp;
-		}
-		if (binFirst > 511) return 0.0;
-		if (binLast > 511) binLast = 511;
-		uint32_t sum = 0;
-		do {
-			sum += output[binFirst++];
-		} while (binFirst <= binLast);
-		return (float)sum * (1.0 / 16384.0);
-	}
-	void averageTogether(uint8_t n) {
-		// not implemented yet (may never be, 86 Hz output rate is ok)
-	}
-	void windowFunction(const int16_t *w) {
-		window = w;
-	}
-	virtual void update(void);
-	uint16_t output[512] __attribute__ ((aligned (4)));
-private:
-	void init(void);
-	const int16_t *window;
-	audio_block_t *blocklist[8];
-	int16_t buffer[2048] __attribute__ ((aligned (4)));
-	//uint32_t sum[512];
-	//uint8_t count;
-	uint8_t state;
-	//uint8_t naverage;
-	volatile bool outputflag;
-	audio_block_t *inputQueueArray[1];
-	arm_cfft_radix4_instance_q15 fft_inst;
+class AudioAnalyzeFFT1024 : public AudioStream {
+ public:
+  AudioAnalyzeFFT1024()
+      : AudioStream(1, inputQueueArray),
+        window(AudioWindowHanning1024),
+        state(0),
+        outputflag(false) {
+    arm_cfft_radix4_init_q15(&fft_inst, 1024, 0, 1);
+  }
+  bool available() {
+    if (outputflag == true) {
+      outputflag = false;
+      return true;
+    }
+    return false;
+  }
+  float read(unsigned int binNumber) {
+    if (binNumber > 511) return 0.0;
+    return (float)(output[binNumber]) * (1.0 / 16384.0);
+  }
+  float read(unsigned int binFirst, unsigned int binLast) {
+    if (binFirst > binLast) {
+      unsigned int tmp = binLast;
+      binLast = binFirst;
+      binFirst = tmp;
+    }
+    if (binFirst > 511) return 0.0;
+    if (binLast > 511) binLast = 511;
+    uint32_t sum = 0;
+    do {
+      sum += output[binFirst++];
+    } while (binFirst <= binLast);
+    return (float)sum * (1.0 / 16384.0);
+  }
+  void averageTogether(uint8_t n) {
+    // not implemented yet (may never be, 86 Hz output rate is ok)
+  }
+  void windowFunction(const int16_t *w) { window = w; }
+  virtual void update(void);
+  uint16_t output[512] __attribute__((aligned(4)));
+
+ private:
+  void init(void);
+  const int16_t *window;
+  audio_block_t *blocklist[8];
+  int16_t buffer[2048] __attribute__((aligned(4)));
+  // uint32_t sum[512];
+  // uint8_t count;
+  uint8_t state;
+  // uint8_t naverage;
+  volatile bool outputflag;
+  audio_block_t *inputQueueArray[1];
+  arm_cfft_radix4_instance_q15 fft_inst;
 };
 
 #endif

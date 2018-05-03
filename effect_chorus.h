@@ -34,19 +34,15 @@
 
 #define CHORUS_DELAY_PASSTHRU -1
 
-class AudioEffectChorus : 
-public AudioStream
-{
-public:
-  AudioEffectChorus(void):
-  AudioStream(1,inputQueueArray), num_chorus(2)
-  { }
+class AudioEffectChorus : public AudioStream {
+ public:
+  AudioEffectChorus(void) : AudioStream(1, inputQueueArray), num_chorus(2) {}
 
-  boolean begin(short *delayline,int delay_length,int n_chorus);
+  boolean begin(short *delayline, int delay_length, int n_chorus);
   virtual void update(void);
   void voices(int n_chorus);
-  
-private:
+
+ private:
   audio_block_t *inputQueueArray[1];
   short *l_delayline;
   short l_circ_idx;

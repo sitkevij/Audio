@@ -2,20 +2,17 @@
 //
 // http://www.pjrc.com/store/audio_tutorial_kit.html
 // https://hackaday.io/project/8292-microcontroller-audio-workshop-had-supercon-2015
-// 
+//
 // Part 2-1: First Design Tool Use
-
 
 ///////////////////////////////////
 // copy the Design Tool code here
 ///////////////////////////////////
 
-
-
 // Use these with the Teensy Audio Shield
-#define SDCARD_CS_PIN    10
-#define SDCARD_MOSI_PIN  7
-#define SDCARD_SCK_PIN   14
+#define SDCARD_CS_PIN 10
+#define SDCARD_MOSI_PIN 7
+#define SDCARD_SCK_PIN 14
 
 // Use these with the Teensy 3.5 & 3.6 SD card
 //#define SDCARD_CS_PIN    BUILTIN_SDCARD
@@ -47,12 +44,8 @@ void loop() {
   if (playSdWav1.isPlaying() == false) {
     Serial.println("Start playing");
     playSdWav1.play("SDTEST3.WAV");
-    delay(10); // wait for library to parse WAV info
+    delay(10);  // wait for library to parse WAV info
   }
 
   // do nothing while playing...
 }
-
-
-
-

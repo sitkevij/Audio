@@ -9,7 +9,6 @@
 //
 // This example code is in the public domain.
 
-
 #include <Audio.h>
 #include <Wire.h>
 #include <SPI.h>
@@ -19,18 +18,18 @@
 // Create the Audio components.  These should be created in the
 // order data flows, inputs/sources -> processing -> outputs
 //
-AudioInputI2S            audioIn;
-AudioAnalyzeToneDetect   row1;     // 7 tone detectors are needed
-AudioAnalyzeToneDetect   row2;     // to receive DTMF dial tones
-AudioAnalyzeToneDetect   row3;
-AudioAnalyzeToneDetect   row4;
-AudioAnalyzeToneDetect   column1;
-AudioAnalyzeToneDetect   column2;
-AudioAnalyzeToneDetect   column3;
-AudioSynthWaveformSine   sine1;    // 2 sine wave
-AudioSynthWaveformSine   sine2;    // to create DTMF
-AudioMixer4              mixer;
-AudioOutputI2S           audioOut;
+AudioInputI2S audioIn;
+AudioAnalyzeToneDetect row1;  // 7 tone detectors are needed
+AudioAnalyzeToneDetect row2;  // to receive DTMF dial tones
+AudioAnalyzeToneDetect row3;
+AudioAnalyzeToneDetect row4;
+AudioAnalyzeToneDetect column1;
+AudioAnalyzeToneDetect column2;
+AudioAnalyzeToneDetect column3;
+AudioSynthWaveformSine sine1;  // 2 sine wave
+AudioSynthWaveformSine sine2;  // to create DTMF
+AudioMixer4 mixer;
+AudioOutputI2S audioOut;
 
 // Create Audio connections between the components
 //
@@ -47,9 +46,8 @@ AudioConnection patchCord12(mixer, 0, audioOut, 0);
 AudioConnection patchCord13(mixer, 0, audioOut, 1);
 
 // Create an object to control the audio shield.
-// 
+//
 AudioControlSGTL5000 audioShield;
-
 
 void setup() {
   // Audio connections require memory to work.  For more
@@ -59,10 +57,11 @@ void setup() {
   // Enable the audio shield and set the output volume.
   audioShield.enable();
   audioShield.volume(0.5);
-  
-  while (!Serial) ;
+
+  while (!Serial)
+    ;
   delay(100);
-  
+
   // Configure the tone detectors with the frequency and number
   // of cycles to match.  These numbers were picked for match
   // times of approx 30 ms.  Longer times are more precise.
@@ -80,7 +79,7 @@ const float column_threshold = 0.2;
 
 void loop() {
   float r1, r2, r3, r4, c1, c2, c3;
-  char digit=0;
+  char digit = 0;
 
   // read all seven tone detectors
   r1 = row1.read();
@@ -116,7 +115,7 @@ void loop() {
     } else if (c3 > column_threshold) {
       digit = '3';
     }
-  } else if (r2 >= row_threshold) { 
+  } else if (r2 >= row_threshold) {
     if (c1 > column_threshold) {
       digit = '4';
     } else if (c2 > column_threshold) {
@@ -124,7 +123,7 @@ void loop() {
     } else if (c3 > column_threshold) {
       digit = '6';
     }
-  } else if (r3 >= row_threshold) { 
+  } else if (r3 >= row_threshold) {
     if (c1 > column_threshold) {
       digit = '7';
     } else if (c2 > column_threshold) {
@@ -132,7 +131,7 @@ void loop() {
     } else if (c3 > column_threshold) {
       digit = '9';
     }
-  } else if (r4 >= row_threshold) { 
+  } else if (r4 >= row_threshold) {
     if (c1 > column_threshold) {
       digit = '*';
     } else if (c2 > column_threshold) {
@@ -151,17 +150,17 @@ void loop() {
 
   // uncomment these lines to see how much CPU time
   // the tone detectors and audio library are using
-  //Serial.print("CPU=");
-  //Serial.print(AudioProcessorUsage());
-  //Serial.print("%, max=");
-  //Serial.print(AudioProcessorUsageMax());
-  //Serial.print("%   ");
+  // Serial.print("CPU=");
+  // Serial.print(AudioProcessorUsage());
+  // Serial.print("%, max=");
+  // Serial.print(AudioProcessorUsageMax());
+  // Serial.print("%   ");
 
   // check if any data has arrived from the serial monitor
   if (Serial.available()) {
     char key = Serial.read();
-    int low=0;
-    int high=0;
+    int low = 0;
+    int high = 0;
     if (key == '1') {
       low = 697;
       high = 1209;
@@ -214,17 +213,15 @@ void loop() {
       sine1.amplitude(0.4);
       sine2.frequency(high);
       sine2.amplitude(0.45);
-      AudioInterrupts();    // enable, both tones will start together
-      delay(100);           // let the sound play for 0.1 second
+      AudioInterrupts();  // enable, both tones will start together
+      delay(100);         // let the sound play for 0.1 second
       AudioNoInterrupts();
       sine1.amplitude(0);
       sine2.amplitude(0);
       AudioInterrupts();
-      delay(50);            // make sure we have 0.05 second silence after
+      delay(50);  // make sure we have 0.05 second silence after
     }
   }
 
   delay(25);
 }
-
-

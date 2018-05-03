@@ -16,9 +16,9 @@
 #include <SPI.h>
 
 // Use these with the Teensy Audio Shield
-#define SDCARD_CS_PIN    10
-#define SDCARD_MOSI_PIN  7
-#define SDCARD_SCK_PIN   14
+#define SDCARD_CS_PIN 10
+#define SDCARD_MOSI_PIN 7
+#define SDCARD_SCK_PIN 14
 
 // Use these with the Teensy 3.5 & 3.6 SD card
 //#define SDCARD_CS_PIN    BUILTIN_SDCARD
@@ -42,7 +42,8 @@ void setup() {
   float size;
 
   // wait for the Arduino Serial Monitor to open
-  while (!Serial) ;
+  while (!Serial)
+    ;
   delay(50);
 
   // Configure SPI
@@ -79,7 +80,7 @@ void setup() {
   }
 
   size = volume.blocksPerCluster() * volume.clusterCount();
-  size = size * (512.0 / 1e6); // convert blocks to millions of bytes
+  size = size * (512.0 / 1e6);  // convert blocks to millions of bytes
   Serial.print("File system space is ");
   Serial.print(size);
   Serial.println(" Mbytes.");
@@ -90,10 +91,11 @@ void setup() {
     Serial.println("SD library is able to access the filesystem");
   } else {
     Serial.println("SD library can not access the filesystem!");
-    Serial.println("Please report this problem, with the make & model of your SD card.");
-    Serial.println("  http://forum.pjrc.com/forums/4-Suggestions-amp-Bug-Reports");
+    Serial.println(
+        "Please report this problem, with the make & model of your SD card.");
+    Serial.println(
+        "  http://forum.pjrc.com/forums/4-Suggestions-amp-Bug-Reports");
   }
-
 
   // Open the 4 sample files.  Hopefully they're on the card
   f1 = SD.open("SDTEST1.WAV");
@@ -108,7 +110,7 @@ void setup() {
     if (f1.size() >= 514048) {
       usecMax = 0;
       usecTotal = 0;
-      for (i=0; i < 1000; i++) {
+      for (i = 0; i < 1000; i++) {
         usecSingle = 0;
         f1.read(buffer, 512);
         usec = usecSingle;
@@ -131,7 +133,7 @@ void setup() {
       f1.seek(0);
       usecMax = 0;
       usecTotal = 0;
-      for (i=0; i < 1000; i++) {
+      for (i = 0; i < 1000; i++) {
         usecSingle = 0;
         f1.read(buffer, 512);
         f2.read(buffer, 512);
@@ -147,7 +149,7 @@ void setup() {
       f1.read(buffer, 512);
       usecMax = 0;
       usecTotal = 0;
-      for (i=0; i < 1000; i++) {
+      for (i = 0; i < 1000; i++) {
         usecSingle = 0;
         f1.read(buffer, 512);
         f2.read(buffer, 512);
@@ -163,7 +165,6 @@ void setup() {
     return;
   }
 
-
   // Speed test reading three files
   if (f3) {
     Serial.println();
@@ -173,7 +174,7 @@ void setup() {
       f2.seek(0);
       usecMax = 0;
       usecTotal = 0;
-      for (i=0; i < 1000; i++) {
+      for (i = 0; i < 1000; i++) {
         usecSingle = 0;
         f1.read(buffer, 512);
         f2.read(buffer, 512);
@@ -184,7 +185,8 @@ void setup() {
       reportSpeed(3, 1000, usecTotal, usecMax);
 
       Serial.println();
-      Serial.println("Reading SDTEST1.WAV, SDTEST2.WAV, SDTEST3.WAV staggered:");
+      Serial.println(
+          "Reading SDTEST1.WAV, SDTEST2.WAV, SDTEST3.WAV staggered:");
       f1.seek(0);
       f2.seek(0);
       f3.seek(0);
@@ -193,7 +195,7 @@ void setup() {
       f2.read(buffer, 512);
       usecMax = 0;
       usecTotal = 0;
-      for (i=0; i < 1000; i++) {
+      for (i = 0; i < 1000; i++) {
         usecSingle = 0;
         f1.read(buffer, 512);
         f2.read(buffer, 512);
@@ -210,18 +212,18 @@ void setup() {
     return;
   }
 
-
   // Speed test reading four files
   if (f4) {
     Serial.println();
-    Serial.println("Reading SDTEST1.WAV, SDTEST2.WAV, SDTEST3.WAV, SDTEST4.WAV:");
+    Serial.println(
+        "Reading SDTEST1.WAV, SDTEST2.WAV, SDTEST3.WAV, SDTEST4.WAV:");
     if (f4.size() >= 514048) {
       f1.seek(0);
       f2.seek(0);
       f3.seek(0);
       usecMax = 0;
       usecTotal = 0;
-      for (i=0; i < 1000; i++) {
+      for (i = 0; i < 1000; i++) {
         usecSingle = 0;
         f1.read(buffer, 512);
         f2.read(buffer, 512);
@@ -233,7 +235,9 @@ void setup() {
       reportSpeed(4, 1000, usecTotal, usecMax);
 
       Serial.println();
-      Serial.println("Reading SDTEST1.WAV, SDTEST2.WAV, SDTEST3.WAV, SDTEST4.WAV staggered:");
+      Serial.println(
+          "Reading SDTEST1.WAV, SDTEST2.WAV, SDTEST3.WAV, SDTEST4.WAV "
+          "staggered:");
       f1.seek(0);
       f2.seek(0);
       f3.seek(0);
@@ -246,7 +250,7 @@ void setup() {
       f3.read(buffer, 512);
       usecMax = 0;
       usecTotal = 0;
-      for (i=0; i < 1000; i++) {
+      for (i = 0; i < 1000; i++) {
         usecSingle = 0;
         f1.read(buffer, 512);
         f2.read(buffer, 512);
@@ -263,22 +267,18 @@ void setup() {
     Serial.println("Unable to find SDTEST4.WAV on this card");
     return;
   }
-
 }
 
-
-unsigned long maximum(unsigned long a, unsigned long b,
-  unsigned long c, unsigned long d)
-{
+unsigned long maximum(unsigned long a, unsigned long b, unsigned long c,
+                      unsigned long d) {
   if (b > a) a = b;
   if (c > a) a = c;
   if (d > a) a = d;
   return a;
 }
 
-
-void reportSpeed(unsigned int numFiles, unsigned long blockCount, unsigned long usecTotal, unsigned long usecMax)
-{
+void reportSpeed(unsigned int numFiles, unsigned long blockCount,
+                 unsigned long usecTotal, unsigned long usecMax) {
   float bytesPerSecond = (float)(blockCount * 512 * numFiles) / usecTotal;
   Serial.print("  Overall speed = ");
   Serial.print(bytesPerSecond);
@@ -287,10 +287,9 @@ void reportSpeed(unsigned int numFiles, unsigned long blockCount, unsigned long 
   Serial.print((float)usecMax / 1000.0);
   Serial.println(" ms");
   Serial.print("    ");
-  Serial.print( (float)usecMax / 29.01333);
+  Serial.print((float)usecMax / 29.01333);
   Serial.println("% of audio frame time");
 }
-
 
 void loop(void) {
   // do nothing after the test

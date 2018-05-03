@@ -8,7 +8,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
+ * The above copyright notice and this permission notice shall be included in
+ *all
  * copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
@@ -27,9 +28,8 @@
 #include "utility/dspinst.h"
 #include "math_helper.h"
 
-void 
-AudioEffectReverb::_do_comb_apf(struct comb_apf *apf, int32_t *in_buf, int32_t *out_buf)
-{
+void AudioEffectReverb::_do_comb_apf(struct comb_apf *apf, int32_t *in_buf,
+                                     int32_t *out_buf) {
   int32_t acc_x, acc_y, g;
   int32_t w, z;
   uint32_t n, buf_len;
@@ -38,7 +38,7 @@ AudioEffectReverb::_do_comb_apf(struct comb_apf *apf, int32_t *in_buf, int32_t *
   buf_len = apf->buf_len;
 
   for (n = 0; n < AUDIO_BLOCK_SAMPLES; n++) {
-    acc_y = apf->buffer[apf->rd_idx%buf_len];
+    acc_y = apf->buffer[apf->rd_idx % buf_len];
     acc_x = in_buf[n];
 
     w = multiply_32x32_rshift32_rounded(g, acc_y);
@@ -46,7 +46,7 @@ AudioEffectReverb::_do_comb_apf(struct comb_apf *apf, int32_t *in_buf, int32_t *
     z = multiply_32x32_rshift32_rounded(g, acc_x);
     acc_y -= (z << 1);
 
-    apf->buffer[apf->wr_idx%buf_len] = acc_x;
+    apf->buffer[apf->wr_idx % buf_len] = acc_x;
     out_buf[n] = acc_y;
 
     apf->rd_idx++;
@@ -54,9 +54,8 @@ AudioEffectReverb::_do_comb_apf(struct comb_apf *apf, int32_t *in_buf, int32_t *
   }
 }
 
-void
-AudioEffectReverb::_do_comb_lpf(struct comb_lpf *lpf, int32_t *in_buf, int32_t *out_buf)
-{
+void AudioEffectReverb::_do_comb_lpf(struct comb_lpf *lpf, int32_t *in_buf,
+                                     int32_t *out_buf) {
   int32_t x, y, w, z, g1, g2, z1;
   uint32_t n, buf_len;
 
@@ -66,14 +65,14 @@ AudioEffectReverb::_do_comb_lpf(struct comb_lpf *lpf, int32_t *in_buf, int32_t *
   buf_len = lpf->buf_len;
 
   for (n = 0; n < AUDIO_BLOCK_SAMPLES; n++) {
-    y = lpf->buffer[lpf->rd_idx%buf_len];
+    y = lpf->buffer[lpf->rd_idx % buf_len];
     x = in_buf[n];
 
     w = multiply_accumulate_32x32_rshift32_rounded(y, g2, z1);
     z = multiply_accumulate_32x32_rshift32_rounded(x, g1, w);
 
     z1 = w;
-    lpf->buffer[lpf->wr_idx%buf_len] = z;
+    lpf->buffer[lpf->wr_idx % buf_len] = z;
     out_buf[n] = y;
 
     lpf->rd_idx++;
@@ -83,9 +82,7 @@ AudioEffectReverb::_do_comb_lpf(struct comb_lpf *lpf, int32_t *in_buf, int32_t *
   lpf->z1 = z1;
 }
 
-void
-AudioEffectReverb::init_comb_filters(void)
-{
+void AudioEffectReverb::init_comb_filters(void) {
   int i;
 
   g_flt_apf[0] = 0.7;
@@ -110,7 +107,7 @@ AudioEffectReverb::init_comb_filters(void)
   for (i = 0; i < 3; i++) {
     apf[i].g = g_q31_apf[i];
     apf[i].wr_idx = 0;
-    apf[i].rd_idx = apf[i].wr_idx - apf[i].delay -1;
+    apf[i].rd_idx = apf[i].wr_idx - apf[i].delay - 1;
   }
 
   lpf[0].buffer = lpf1_buf;
@@ -130,13 +127,11 @@ AudioEffectReverb::init_comb_filters(void)
     lpf[i].g1 = g1_q31_lpf[i];
     lpf[i].g2 = g2_q31_lpf;
     lpf[i].wr_idx = 0;
-    lpf[i].rd_idx = lpf[i].wr_idx - lpf[i].delay -1;
+    lpf[i].rd_idx = lpf[i].wr_idx - lpf[i].delay - 1;
   }
 }
 
-void
-AudioEffectReverb::clear_buffers(void)
-{
+void AudioEffectReverb::clear_buffers(void) {
   memset(apf1_buf, 0, APF1_BUF_LEN);
   memset(apf2_buf, 0, APF1_BUF_LEN);
   memset(apf3_buf, 0, APF1_BUF_LEN);
@@ -147,35 +142,27 @@ AudioEffectReverb::clear_buffers(void)
   memset(lpf4_buf, 0, LPF4_BUF_LEN);
 }
 
-void
-AudioEffectReverb::reverbTime(float rt)
-{
-  if (rt <= 0.0)
-    return;
+void AudioEffectReverb::reverbTime(float rt) {
+  if (rt <= 0.0) return;
 
   reverb_time_sec = rt;
 
-  g1_flt_lpf[0] = powf(10.0, -(3.0*LPF1_DLY_SEC)/(reverb_time_sec));
-  g1_flt_lpf[1] = powf(10.0, -(3.0*LPF2_DLY_SEC)/(reverb_time_sec));
-  g1_flt_lpf[2] = powf(10.0, -(3.0*LPF3_DLY_SEC)/(reverb_time_sec));
-  g1_flt_lpf[3] = powf(10.0, -(3.0*LPF4_DLY_SEC)/(reverb_time_sec));
+  g1_flt_lpf[0] = powf(10.0, -(3.0 * LPF1_DLY_SEC) / (reverb_time_sec));
+  g1_flt_lpf[1] = powf(10.0, -(3.0 * LPF2_DLY_SEC) / (reverb_time_sec));
+  g1_flt_lpf[2] = powf(10.0, -(3.0 * LPF3_DLY_SEC) / (reverb_time_sec));
+  g1_flt_lpf[3] = powf(10.0, -(3.0 * LPF4_DLY_SEC) / (reverb_time_sec));
 
   arm_float_to_q31(g1_flt_lpf, g1_q31_lpf, 4);
 
-  for (int i = 0; i < 4; i++)
-    lpf[i].g1 = g1_q31_lpf[i];
+  for (int i = 0; i < 4; i++) lpf[i].g1 = g1_q31_lpf[i];
 }
 
-void
-AudioEffectReverb::update(void)
-{
+void AudioEffectReverb::update(void) {
   audio_block_t *block;
 
-  if (!(block = receiveWritable()))
-    return;
+  if (!(block = receiveWritable())) return;
 
-  if (!block->data)
-    return;
+  if (!block->data) return;
 
   arm_q15_to_q31(block->data, q31_buf, AUDIO_BLOCK_SAMPLES);
 

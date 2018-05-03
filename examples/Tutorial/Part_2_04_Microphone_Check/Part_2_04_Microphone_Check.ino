@@ -2,16 +2,12 @@
 //
 // http://www.pjrc.com/store/audio_tutorial_kit.html
 // https://hackaday.io/project/8292-microcontroller-audio-workshop-had-supercon-2015
-// 
+//
 // Part 2-4: Using The Microphone
-
 
 ///////////////////////////////////
 // copy the Design Tool code here
 ///////////////////////////////////
-
-
-
 
 void setup() {
   Serial.begin(9600);
@@ -26,7 +22,3 @@ void setup() {
 void loop() {
   // do nothing
 }
-
-
-
-

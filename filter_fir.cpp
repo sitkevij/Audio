@@ -23,37 +23,33 @@
 #include <Arduino.h>
 #include "filter_fir.h"
 
+void AudioFilterFIR::update(void) {
+  audio_block_t *block, *b_new;
 
-void AudioFilterFIR::update(void)
-{
-	audio_block_t *block, *b_new;
+  block = receiveReadOnly();
+  if (!block) return;
 
-	block = receiveReadOnly();
-	if (!block) return;
+  // If there's no coefficient table, give up.
+  if (coeff_p == NULL) {
+    release(block);
+    return;
+  }
 
-	// If there's no coefficient table, give up.  
-	if (coeff_p == NULL) {
-		release(block);
-		return;
-	}
+  // do passthru
+  if (coeff_p == FIR_PASSTHRU) {
+    // Just passthrough
+    transmit(block);
+    release(block);
+    return;
+  }
 
-	// do passthru
-	if (coeff_p == FIR_PASSTHRU) {
-		// Just passthrough
-		transmit(block);
-		release(block);
-		return;
-	}
-
-	// get a block for the FIR output
-	b_new = allocate();
-	if (b_new) {
-		arm_fir_fast_q15(&fir_inst, (q15_t *)block->data,
-			(q15_t *)b_new->data, AUDIO_BLOCK_SAMPLES);
-		transmit(b_new); // send the FIR output
-		release(b_new);
-	}
-	release(block);
+  // get a block for the FIR output
+  b_new = allocate();
+  if (b_new) {
+    arm_fir_fast_q15(&fir_inst, (q15_t *)block->data, (q15_t *)b_new->data,
+                     AUDIO_BLOCK_SAMPLES);
+    transmit(b_new);  // send the FIR output
+    release(b_new);
+  }
+  release(block);
 }
-
-

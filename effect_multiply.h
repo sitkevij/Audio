@@ -13,7 +13,8 @@
  * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice, development funding notice, and this permission
- * notice shall be included in all copies or substantial portions of the Software.
+ * notice shall be included in all copies or substantial portions of the
+ *Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -30,13 +31,13 @@
 #include "AudioStream.h"
 #include "utility/dspinst.h"
 
-class AudioEffectMultiply : public AudioStream
-{
-public:
-	AudioEffectMultiply() : AudioStream(2, inputQueueArray) { }
-	virtual void update(void);
-private:
-	audio_block_t *inputQueueArray[2];
+class AudioEffectMultiply : public AudioStream {
+ public:
+  AudioEffectMultiply() : AudioStream(2, inputQueueArray) {}
+  virtual void update(void);
+
+ private:
+  audio_block_t *inputQueueArray[2];
 };
 
 #endif

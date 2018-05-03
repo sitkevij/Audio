@@ -14,20 +14,20 @@
 #include <SD.h>
 #include <SerialFlash.h>
 
-AudioPlaySdWav           playSdWav1;
-AudioPlaySdWav           playSdWav2;
-AudioOutputI2SQuad       audioOutput;
-AudioConnection          patchCord1(playSdWav1, 0, audioOutput, 0);
-AudioConnection          patchCord2(playSdWav1, 1, audioOutput, 1);
-AudioConnection          patchCord3(playSdWav2, 0, audioOutput, 2);
-AudioConnection          patchCord4(playSdWav2, 1, audioOutput, 3);
-AudioControlSGTL5000     sgtl5000_1;
-AudioControlSGTL5000     sgtl5000_2;
+AudioPlaySdWav playSdWav1;
+AudioPlaySdWav playSdWav2;
+AudioOutputI2SQuad audioOutput;
+AudioConnection patchCord1(playSdWav1, 0, audioOutput, 0);
+AudioConnection patchCord2(playSdWav1, 1, audioOutput, 1);
+AudioConnection patchCord3(playSdWav2, 0, audioOutput, 2);
+AudioConnection patchCord4(playSdWav2, 1, audioOutput, 3);
+AudioControlSGTL5000 sgtl5000_1;
+AudioControlSGTL5000 sgtl5000_2;
 
 // Use these with the Teensy Audio Shield
-#define SDCARD_CS_PIN    10
-#define SDCARD_MOSI_PIN  7
-#define SDCARD_SCK_PIN   14
+#define SDCARD_CS_PIN 10
+#define SDCARD_MOSI_PIN 7
+#define SDCARD_SCK_PIN 14
 
 // Use these with the Teensy 3.5 & 3.6 SD card
 //#define SDCARD_CS_PIN    BUILTIN_SDCARD
@@ -42,7 +42,7 @@ AudioControlSGTL5000     sgtl5000_2;
 void setup() {
   Serial.begin(9600);
   AudioMemory(10);
-  
+
   sgtl5000_1.setAddress(LOW);
   sgtl5000_1.enable();
   sgtl5000_1.volume(0.5);
@@ -66,12 +66,11 @@ void loop() {
   if (playSdWav1.isPlaying() == false) {
     Serial.println("Start playing 1");
     playSdWav1.play("SDTEST2.WAV");
-    delay(10); // wait for library to parse WAV info
+    delay(10);  // wait for library to parse WAV info
   }
   if (playSdWav2.isPlaying() == false) {
     Serial.println("Start playing 2");
     playSdWav2.play("SDTEST4.WAV");
-    delay(10); // wait for library to parse WAV info
+    delay(10);  // wait for library to parse WAV info
   }
 }
-

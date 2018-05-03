@@ -13,7 +13,8 @@
  * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice, development funding notice, and this permission
- * notice shall be included in all copies or substantial portions of the Software.
+ * notice shall be included in all copies or substantial portions of the
+ *Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -28,49 +29,45 @@
 #include "play_queue.h"
 #include "utility/dspinst.h"
 
-bool AudioPlayQueue::available(void)
-{
-        if (userblock) return true;
-        userblock = allocate();
-        if (userblock) return true;
-        return false;
+bool AudioPlayQueue::available(void) {
+  if (userblock) return true;
+  userblock = allocate();
+  if (userblock) return true;
+  return false;
 }
 
-int16_t * AudioPlayQueue::getBuffer(void)
-{
-	if (userblock) return userblock->data;
-	while (1) {
-		userblock = allocate();
-		if (userblock) return userblock->data;
-		yield();
-	}
+int16_t *AudioPlayQueue::getBuffer(void) {
+  if (userblock) return userblock->data;
+  while (1) {
+    userblock = allocate();
+    if (userblock) return userblock->data;
+    yield();
+  }
 }
 
-void AudioPlayQueue::playBuffer(void)
-{
-	uint32_t h;
+void AudioPlayQueue::playBuffer(void) {
+  uint32_t h;
 
-	if (!userblock) return;
-	h = head + 1;
-	if (h >= 32) h = 0;
-	while (tail == h) ; // wait until space in the queue
-	queue[h] = userblock;
-	head = h;
-	userblock = NULL;
+  if (!userblock) return;
+  h = head + 1;
+  if (h >= 32) h = 0;
+  while (tail == h)
+    ;  // wait until space in the queue
+  queue[h] = userblock;
+  head = h;
+  userblock = NULL;
 }
 
-void AudioPlayQueue::update(void)
-{
-	audio_block_t *block;
-	uint32_t t;
+void AudioPlayQueue::update(void) {
+  audio_block_t *block;
+  uint32_t t;
 
-	t = tail;
-	if (t != head) {
-		if (++t >= 32) t = 0;
-		block = queue[t];
-		tail = t;
-		transmit(block);
-		release(block);
-	}
+  t = tail;
+  if (t != head) {
+    if (++t >= 32) t = 0;
+    block = queue[t];
+    tail = t;
+    transmit(block);
+    release(block);
+  }
 }
-

@@ -2,7 +2,7 @@
 //
 // http://www.pjrc.com/store/audio_tutorial_kit.html
 // https://hackaday.io/project/8292-microcontroller-audio-workshop-had-supercon-2015
-// 
+//
 // Part 2-8: Oscillators
 
 #include <Bounce.h>
@@ -11,20 +11,16 @@ Bounce button0 = Bounce(0, 15);
 Bounce button1 = Bounce(1, 15);  // 15 = 15 ms debounce time
 Bounce button2 = Bounce(2, 15);
 
-
 ///////////////////////////////////
 // copy the Design Tool code here
 ///////////////////////////////////
-
-
-
 
 void setup() {
   Serial.begin(9600);
   AudioMemory(20);
   sgtl5000_1.enable();
   sgtl5000_1.volume(0.32);
-  
+
   pinMode(0, INPUT_PULLUP);
   pinMode(1, INPUT_PULLUP);
   pinMode(2, INPUT_PULLUP);
@@ -140,12 +136,10 @@ void loop() {
   }
 
   // use the knobs to adjust parameters
-  //float knob1 = (float)analogRead(A1) / 1023.0;
+  // float knob1 = (float)analogRead(A1) / 1023.0;
   float knob2 = (float)analogRead(A2) / 1023.0;
   float knob3 = (float)analogRead(A3) / 1023.0;
   waveform1.frequency(360 * knob2 + 0.25);
   sine_fm1.frequency(knob3 * 1500 + 50);
   sine1.frequency(knob3 * 1500 + 50);
 }
-
-

@@ -1,4 +1,4 @@
-// Waveform Modulation Example - Create waveforms with 
+// Waveform Modulation Example - Create waveforms with
 // modulated frequency
 //
 // This example is meant to be used with 3 buttons (pin 0,
@@ -23,24 +23,24 @@
 #include <SerialFlash.h>
 #include <Bounce.h>
 
-AudioSynthWaveformSine   sine1;          //xy=131,97
-AudioSynthWaveformSine   sine2;          //xy=152,170
-AudioSynthWaveformModulated waveformMod1;   //xy=354,69
-AudioOutputAnalogStereo  dacs1;          //xy=490,209
-AudioOutputI2S           i2s1;           //xy=532,140
-AudioConnection          patchCord1(sine1, 0, i2s1, 1);
-AudioConnection          patchCord2(sine1, 0, dacs1, 1);
-AudioConnection          patchCord3(sine1, 0, waveformMod1, 0);
-AudioConnection          patchCord4(sine2, 0, waveformMod1, 1);
-AudioConnection          patchCord5(waveformMod1, 0, i2s1, 0);
-AudioConnection          patchCord6(waveformMod1, 0, dacs1, 0);
-AudioControlSGTL5000     sgtl5000_1;     //xy=286,240
+AudioSynthWaveformSine sine1;              // xy=131,97
+AudioSynthWaveformSine sine2;              // xy=152,170
+AudioSynthWaveformModulated waveformMod1;  // xy=354,69
+AudioOutputAnalogStereo dacs1;             // xy=490,209
+AudioOutputI2S i2s1;                       // xy=532,140
+AudioConnection patchCord1(sine1, 0, i2s1, 1);
+AudioConnection patchCord2(sine1, 0, dacs1, 1);
+AudioConnection patchCord3(sine1, 0, waveformMod1, 0);
+AudioConnection patchCord4(sine2, 0, waveformMod1, 1);
+AudioConnection patchCord5(waveformMod1, 0, i2s1, 0);
+AudioConnection patchCord6(waveformMod1, 0, dacs1, 0);
+AudioControlSGTL5000 sgtl5000_1;  // xy=286,240
 
 Bounce button0 = Bounce(0, 15);
 Bounce button1 = Bounce(1, 15);
 Bounce button2 = Bounce(2, 15);
 
-int current_waveform=0;
+int current_waveform = 0;
 
 extern const int16_t myWaveform[256];  // defined in myWaveform.ino
 
@@ -52,14 +52,14 @@ void setup() {
 
   delay(300);
   Serial.println("Waveform Modulation Test");
-  
+
   // Audio connections require memory to work.  For more
   // detailed information, see the MemoryAndCpuUsage example
   AudioMemory(12);
 
   // Comment these out if not using the audio adaptor board.
   sgtl5000_1.enable();
-  sgtl5000_1.volume(0.8); // caution: very loud - use oscilloscope only!
+  sgtl5000_1.volume(0.8);  // caution: very loud - use oscilloscope only!
 
   // Confirgure both to use "myWaveform" for WAVEFORM_ARBITRARY
   waveformMod1.arbitraryWaveform(myWaveform, 172.0);
@@ -67,14 +67,14 @@ void setup() {
   // Configure for middle C note without modulation
   waveformMod1.frequency(261.63);
   waveformMod1.amplitude(1.0);
-  sine1.frequency(20.3); // Sine waves are low frequency oscillators (LFO)
+  sine1.frequency(20.3);  // Sine waves are low frequency oscillators (LFO)
   sine2.frequency(1.2);
 
   current_waveform = WAVEFORM_TRIANGLE_VARIABLE;
   waveformMod1.begin(current_waveform);
 
   // uncomment to try modulating phase instead of frequency
-  //waveformMod1.phaseModulation(720.0);
+  // waveformMod1.phaseModulation(720.0);
 }
 
 void loop() {
@@ -131,6 +131,4 @@ void loop() {
     }
     waveformMod1.begin(current_waveform);
   }
-  
 }
-

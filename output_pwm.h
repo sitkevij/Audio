@@ -13,7 +13,8 @@
  * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice, development funding notice, and this permission
- * notice shall be included in all copies or substantial portions of the Software.
+ * notice shall be included in all copies or substantial portions of the
+ *Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -31,21 +32,21 @@
 #include "AudioStream.h"
 #include "DMAChannel.h"
 
-class AudioOutputPWM : public AudioStream
-{
-public:
-	AudioOutputPWM(void) : AudioStream(1, inputQueueArray) { begin(); }
-	virtual void update(void);
-private:
-	static audio_block_t *block_1st;
-	static audio_block_t *block_2nd;
-	static uint32_t block_offset;
-	static bool update_responsibility;
-	static uint8_t interrupt_count;
-	audio_block_t *inputQueueArray[1];
-	static DMAChannel dma;
-	static void isr(void);
-	void begin(void);
+class AudioOutputPWM : public AudioStream {
+ public:
+  AudioOutputPWM(void) : AudioStream(1, inputQueueArray) { begin(); }
+  virtual void update(void);
+
+ private:
+  static audio_block_t *block_1st;
+  static audio_block_t *block_2nd;
+  static uint32_t block_offset;
+  static bool update_responsibility;
+  static uint8_t interrupt_count;
+  audio_block_t *inputQueueArray[1];
+  static DMAChannel dma;
+  static void isr(void);
+  void begin(void);
 };
 
 #endif

@@ -13,7 +13,8 @@
  * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice, development funding notice, and this permission
- * notice shall be included in all copies or substantial portions of the Software.
+ * notice shall be included in all copies or substantial portions of the
+ *Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -25,7 +26,8 @@
  *
  * Combine analog signals with bitwise expressions like XOR.
  * Combining two simple oscillators results in interesting new waveforms,
- * Combining white noise or dynamic incoming audio results in aggressive digital distortion.
+ * Combining white noise or dynamic incoming audio results in aggressive digital
+ *distortion.
  */
 
 #ifndef effect_digital_combine_h_
@@ -33,26 +35,26 @@
 #include <Arduino.h>
 #include "AudioStream.h"
 
-class AudioEffectDigitalCombine : public AudioStream
-{
-public:
-	enum combineMode {
-		OR    = 0,
-		XOR   = 1,
-		AND   = 2,
-		MODULO = 3,
-	};
-	AudioEffectDigitalCombine() : AudioStream(2, inputQueueArray), mode_sel(OR) { }
-	void setCombineMode(int mode_in) {
-		if (mode_in > 3) {
-	  		mode_in = 3;
-	  	}
-	  	mode_sel = mode_in;
-	}
-	virtual void update(void);
-private:
-	short mode_sel;
-	audio_block_t *inputQueueArray[2];
+class AudioEffectDigitalCombine : public AudioStream {
+ public:
+  enum combineMode {
+    OR = 0,
+    XOR = 1,
+    AND = 2,
+    MODULO = 3,
+  };
+  AudioEffectDigitalCombine() : AudioStream(2, inputQueueArray), mode_sel(OR) {}
+  void setCombineMode(int mode_in) {
+    if (mode_in > 3) {
+      mode_in = 3;
+    }
+    mode_sel = mode_in;
+  }
+  virtual void update(void);
+
+ private:
+  short mode_sel;
+  audio_block_t *inputQueueArray[2];
 };
 
 #endif

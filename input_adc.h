@@ -13,7 +13,8 @@
  * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice, development funding notice, and this permission
- * notice shall be included in all copies or substantial portions of the Software.
+ * notice shall be included in all copies or substantial portions of the
+ *Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -31,24 +32,23 @@
 #include "AudioStream.h"
 #include "DMAChannel.h"
 
-class AudioInputAnalog : public AudioStream
-{
-public:
-        AudioInputAnalog() : AudioStream(0, NULL) { init(A2); }
-        AudioInputAnalog(uint8_t pin) : AudioStream(0, NULL) { init(pin); }
-        virtual void update(void);
-        friend void dma_ch9_isr(void);
-private:
-        static audio_block_t *block_left;
-        static uint16_t block_offset;
-        static int32_t hpf_y1;
-        static int32_t hpf_x1;
+class AudioInputAnalog : public AudioStream {
+ public:
+  AudioInputAnalog() : AudioStream(0, NULL) { init(A2); }
+  AudioInputAnalog(uint8_t pin) : AudioStream(0, NULL) { init(pin); }
+  virtual void update(void);
+  friend void dma_ch9_isr(void);
 
-        static bool update_responsibility;
-        static DMAChannel dma;
-        static void isr(void);
-        static void init(uint8_t pin);
+ private:
+  static audio_block_t *block_left;
+  static uint16_t block_offset;
+  static int32_t hpf_y1;
+  static int32_t hpf_x1;
 
+  static bool update_responsibility;
+  static DMAChannel dma;
+  static void isr(void);
+  static void init(uint8_t pin);
 };
 
 #endif

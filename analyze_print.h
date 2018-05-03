@@ -13,7 +13,8 @@
  * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice, development funding notice, and this permission
- * notice shall be included in all copies or substantial portions of the Software.
+ * notice shall be included in all copies or substantial portions of the
+ *Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -30,26 +31,31 @@
 #include "Arduino.h"
 #include "AudioStream.h"
 
-class AudioAnalyzePrint : public AudioStream
-{
-public:
-	AudioAnalyzePrint(void) : AudioStream(1, inputQueueArray),
-	  myname(NULL), state(0), trigger_edge(0), delay_length(0), print_length(500) {}
-	virtual void update(void);
-	void name(const char *str) { myname = str; }
-	void trigger(void);
-	void trigger(float level, int edge);
-	void delay(uint32_t num) { delay_length = num; }
-	void length(uint32_t num) { print_length = num; }
-private:
-	const char *myname;
-	uint8_t state;
-	uint8_t trigger_edge; // trigger type, 0=none, 2=RISING, 3=FALLING
-	int16_t trigger_level;
-	uint32_t delay_length; // number of samples between trigger and printing
-	uint32_t print_length; // number of samples to print
-	uint32_t count;
-	audio_block_t *inputQueueArray[1];
+class AudioAnalyzePrint : public AudioStream {
+ public:
+  AudioAnalyzePrint(void)
+      : AudioStream(1, inputQueueArray),
+        myname(NULL),
+        state(0),
+        trigger_edge(0),
+        delay_length(0),
+        print_length(500) {}
+  virtual void update(void);
+  void name(const char *str) { myname = str; }
+  void trigger(void);
+  void trigger(float level, int edge);
+  void delay(uint32_t num) { delay_length = num; }
+  void length(uint32_t num) { print_length = num; }
+
+ private:
+  const char *myname;
+  uint8_t state;
+  uint8_t trigger_edge;  // trigger type, 0=none, 2=RISING, 3=FALLING
+  int16_t trigger_level;
+  uint32_t delay_length;  // number of samples between trigger and printing
+  uint32_t print_length;  // number of samples to print
+  uint32_t count;
+  audio_block_t *inputQueueArray[1];
 };
 
 #endif

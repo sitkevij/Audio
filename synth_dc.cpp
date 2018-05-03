@@ -13,7 +13,8 @@
  * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice, development funding notice, and this permission
- * notice shall be included in all copies or substantial portions of the Software.
+ * notice shall be included in all copies or substantial portions of the
+ *Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -27,83 +28,79 @@
 #include <Arduino.h>
 #include "synth_dc.h"
 
-void AudioSynthWaveformDc::update(void)
-{
-	audio_block_t *block;
-	uint32_t *p, *end, val;
-	int32_t count, t1, t2, t3, t4;
+void AudioSynthWaveformDc::update(void) {
+  audio_block_t *block;
+  uint32_t *p, *end, val;
+  int32_t count, t1, t2, t3, t4;
 
-	block = allocate();
-	if (!block) return;
-	p = (uint32_t *)(block->data);
-	end = p + AUDIO_BLOCK_SAMPLES/2;
+  block = allocate();
+  if (!block) return;
+  p = (uint32_t *)(block->data);
+  end = p + AUDIO_BLOCK_SAMPLES / 2;
 
-	if (state == 0) {
-		// steady DC output, simply fill the buffer with fixed value
-		val = pack_16t_16t(magnitude, magnitude);
-		do {
-			*p++ = val;
-			*p++ = val;
-			*p++ = val;
-			*p++ = val;
-			*p++ = val;
-			*p++ = val;
-			*p++ = val;
-			*p++ = val;
-		} while (p < end);
-	} else {
-		// transitioning to a new DC level
-		//count = (target - magnitude) / increment;
-		count = substract_int32_then_divide_int32(target, magnitude, increment);
-		if (count >= AUDIO_BLOCK_SAMPLES) {
-			// this update will not reach the target
-			do {
-				magnitude += increment;
-				t1 = magnitude;
-				magnitude += increment;
-				t1 = pack_16t_16t(magnitude, t1);
-				magnitude += increment;
-				t2 = magnitude;
-				magnitude += increment;
-				t2 = pack_16t_16t(magnitude, t2);
-				magnitude += increment;
-				t3 = magnitude;
-				magnitude += increment;
-				t3 = pack_16t_16t(magnitude, t3);
-				magnitude += increment;
-				t4 = magnitude;
-				magnitude += increment;
-				t4 = pack_16t_16t(magnitude, t4);
-				*p++ = t1;
-				*p++ = t2;
-				*p++ = t3;
-				*p++ = t4;
-			} while (p < end);
-		} else {
-			// this update reaches the target
-			while (count >= 2) {
-				count -= 2;
-				magnitude += increment;
-				t1 = magnitude;
-				magnitude += increment;
-				t1 = pack_16t_16t(magnitude, t1);
-				*p++ = t1;
-			}
-			if (count) {
-				t1 = pack_16t_16t(target, magnitude + increment);
-				*p++ = t1;
-			}
-			magnitude = target;
-			state = 0;
-			val = pack_16t_16t(magnitude, magnitude);
-			while (p < end) {
-				*p++ = val;
-			}
-		}
-	}
-	transmit(block);
-	release(block);
+  if (state == 0) {
+    // steady DC output, simply fill the buffer with fixed value
+    val = pack_16t_16t(magnitude, magnitude);
+    do {
+      *p++ = val;
+      *p++ = val;
+      *p++ = val;
+      *p++ = val;
+      *p++ = val;
+      *p++ = val;
+      *p++ = val;
+      *p++ = val;
+    } while (p < end);
+  } else {
+    // transitioning to a new DC level
+    // count = (target - magnitude) / increment;
+    count = substract_int32_then_divide_int32(target, magnitude, increment);
+    if (count >= AUDIO_BLOCK_SAMPLES) {
+      // this update will not reach the target
+      do {
+        magnitude += increment;
+        t1 = magnitude;
+        magnitude += increment;
+        t1 = pack_16t_16t(magnitude, t1);
+        magnitude += increment;
+        t2 = magnitude;
+        magnitude += increment;
+        t2 = pack_16t_16t(magnitude, t2);
+        magnitude += increment;
+        t3 = magnitude;
+        magnitude += increment;
+        t3 = pack_16t_16t(magnitude, t3);
+        magnitude += increment;
+        t4 = magnitude;
+        magnitude += increment;
+        t4 = pack_16t_16t(magnitude, t4);
+        *p++ = t1;
+        *p++ = t2;
+        *p++ = t3;
+        *p++ = t4;
+      } while (p < end);
+    } else {
+      // this update reaches the target
+      while (count >= 2) {
+        count -= 2;
+        magnitude += increment;
+        t1 = magnitude;
+        magnitude += increment;
+        t1 = pack_16t_16t(magnitude, t1);
+        *p++ = t1;
+      }
+      if (count) {
+        t1 = pack_16t_16t(target, magnitude + increment);
+        *p++ = t1;
+      }
+      magnitude = target;
+      state = 0;
+      val = pack_16t_16t(magnitude, magnitude);
+      while (p < end) {
+        *p++ = val;
+      }
+    }
+  }
+  transmit(block);
+  release(block);
 }
-
-
-

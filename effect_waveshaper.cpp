@@ -10,7 +10,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
+ * The above copyright notice and this permission notice shall be included in
+ *all
  * copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
@@ -25,24 +26,24 @@
 #include <Arduino.h>
 #include "effect_waveshaper.h"
 
-AudioEffectWaveshaper::~AudioEffectWaveshaper()
-{
-  if(this->waveshape) {
-    delete [] this->waveshape;
+AudioEffectWaveshaper::~AudioEffectWaveshaper() {
+  if (this->waveshape) {
+    delete[] this->waveshape;
   }
 }
 
-void AudioEffectWaveshaper::shape(float* waveshape, int length)
-{
+void AudioEffectWaveshaper::shape(float* waveshape, int length) {
   // length must be bigger than 1 and equal to a power of two + 1
   // anything else means we don't continue
-  if(!waveshape || length < 2 || length > 32769 || ((length - 1) & (length - 2))) return;
+  if (!waveshape || length < 2 || length > 32769 ||
+      ((length - 1) & (length - 2)))
+    return;
 
-  if(this->waveshape) {
-    delete [] this->waveshape;
+  if (this->waveshape) {
+    delete[] this->waveshape;
   }
   this->waveshape = new int16_t[length];
-  for(int i = 0; i < length; i++) {
+  for (int i = 0; i < length; i++) {
     this->waveshape[i] = 32767 * waveshape[i];
   }
 
@@ -53,11 +54,10 @@ void AudioEffectWaveshaper::shape(float* waveshape, int length)
   while (index >>= 1) --lerpshift;
 }
 
-void AudioEffectWaveshaper::update(void)
-{
-  if(!waveshape) return;
+void AudioEffectWaveshaper::update(void) {
+  if (!waveshape) return;
 
-  audio_block_t *block;
+  audio_block_t* block;
   block = receiveWritable();
   if (!block) return;
 

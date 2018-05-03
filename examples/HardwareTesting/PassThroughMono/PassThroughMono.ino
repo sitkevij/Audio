@@ -12,11 +12,11 @@
 #include <SerialFlash.h>
 
 // GUItool: begin automatically generated code
-AudioInputAnalog         adc1;           //xy=161,80
-AudioOutputAnalog        dac1;           //xy=329,47
-AudioOutputPWM           pwm1;           //xy=331,125
-AudioConnection          patchCord1(adc1, dac1);
-AudioConnection          patchCord2(adc1, pwm1);
+AudioInputAnalog adc1;   // xy=161,80
+AudioOutputAnalog dac1;  // xy=329,47
+AudioOutputPWM pwm1;     // xy=331,125
+AudioConnection patchCord1(adc1, dac1);
+AudioConnection patchCord2(adc1, pwm1);
 // GUItool: end automatically generated code
 
 void setup() {
@@ -30,5 +30,3 @@ void loop() {
 
   // When AudioInputAnalog is running, analogRead() must NOT be used.
 }
-
-

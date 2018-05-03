@@ -5,10 +5,10 @@
 #include <SerialFlash.h>
 
 // GUItool: begin automatically generated code
-AudioSynthWaveform       waveform1;      //xy=110,75
-AudioOutputPT8211        pt8211_1;          //xy=303,78
-AudioConnection          patchCord1(waveform1, 0, pt8211_1, 0);
-AudioConnection          patchCord2(waveform1, 0, pt8211_1, 1);
+AudioSynthWaveform waveform1;  // xy=110,75
+AudioOutputPT8211 pt8211_1;    // xy=303,78
+AudioConnection patchCord1(waveform1, 0, pt8211_1, 0);
+AudioConnection patchCord2(waveform1, 0, pt8211_1, 1);
 // GUItool: end automatically generated code
 
 void setup() {
@@ -18,5 +18,4 @@ void setup() {
   waveform1.amplitude(0.99);
 }
 
-void loop() {
-}
+void loop() {}

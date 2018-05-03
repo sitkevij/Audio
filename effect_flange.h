@@ -33,26 +33,23 @@
 
 #define FLANGE_DELAY_PASSTHRU 0
 
-class AudioEffectFlange : 
-public AudioStream
-{
-public:
-  AudioEffectFlange(void): 
-  AudioStream(1,inputQueueArray) { 
-  }
+class AudioEffectFlange : public AudioStream {
+ public:
+  AudioEffectFlange(void) : AudioStream(1, inputQueueArray) {}
 
-  boolean begin(short *delayline,int d_length,int delay_offset,int d_depth,float delay_rate);
-  boolean voices(int delay_offset,int d_depth,float delay_rate);
+  boolean begin(short *delayline, int d_length, int delay_offset, int d_depth,
+                float delay_rate);
+  boolean voices(int delay_offset, int d_depth, float delay_rate);
   virtual void update(void);
-  
-private:
+
+ private:
   audio_block_t *inputQueueArray[1];
   short *l_delayline;
   int delay_length;
   short l_circ_idx;
   int delay_depth;
   int delay_offset_idx;
-  int   delay_rate_incr;
+  int delay_rate_incr;
   unsigned int l_delay_rate_index;
 };
 

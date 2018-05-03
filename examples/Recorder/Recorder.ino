@@ -18,16 +18,16 @@
 #include <SerialFlash.h>
 
 // GUItool: begin automatically generated code
-AudioInputI2S            i2s2;           //xy=105,63
-AudioAnalyzePeak         peak1;          //xy=278,108
-AudioRecordQueue         queue1;         //xy=281,63
-AudioPlaySdRaw           playRaw1;       //xy=302,157
-AudioOutputI2S           i2s1;           //xy=470,120
-AudioConnection          patchCord1(i2s2, 0, queue1, 0);
-AudioConnection          patchCord2(i2s2, 0, peak1, 0);
-AudioConnection          patchCord3(playRaw1, 0, i2s1, 0);
-AudioConnection          patchCord4(playRaw1, 0, i2s1, 1);
-AudioControlSGTL5000     sgtl5000_1;     //xy=265,212
+AudioInputI2S i2s2;       // xy=105,63
+AudioAnalyzePeak peak1;   // xy=278,108
+AudioRecordQueue queue1;  // xy=281,63
+AudioPlaySdRaw playRaw1;  // xy=302,157
+AudioOutputI2S i2s1;      // xy=470,120
+AudioConnection patchCord1(i2s2, 0, queue1, 0);
+AudioConnection patchCord2(i2s2, 0, peak1, 0);
+AudioConnection patchCord3(playRaw1, 0, i2s1, 0);
+AudioConnection patchCord4(playRaw1, 0, i2s1, 1);
+AudioControlSGTL5000 sgtl5000_1;  // xy=265,212
 // GUItool: end automatically generated code
 
 // For a stereo recording version, see this forum thread:
@@ -35,19 +35,17 @@ AudioControlSGTL5000     sgtl5000_1;     //xy=265,212
 
 // Bounce objects to easily and reliably read the buttons
 Bounce buttonRecord = Bounce(0, 8);
-Bounce buttonStop =   Bounce(1, 8);  // 8 = 8 ms debounce time
-Bounce buttonPlay =   Bounce(2, 8);
-
+Bounce buttonStop = Bounce(1, 8);  // 8 = 8 ms debounce time
+Bounce buttonPlay = Bounce(2, 8);
 
 // which input on the audio shield will be used?
 const int myInput = AUDIO_INPUT_LINEIN;
-//const int myInput = AUDIO_INPUT_MIC;
-
+// const int myInput = AUDIO_INPUT_MIC;
 
 // Use these with the Teensy Audio Shield
-#define SDCARD_CS_PIN    10
-#define SDCARD_MOSI_PIN  7
-#define SDCARD_SCK_PIN   14
+#define SDCARD_CS_PIN 10
+#define SDCARD_MOSI_PIN 7
+#define SDCARD_SCK_PIN 14
 
 // Use these with the Teensy 3.5 & 3.6 SD card
 //#define SDCARD_CS_PIN    BUILTIN_SDCARD
@@ -58,7 +56,6 @@ const int myInput = AUDIO_INPUT_LINEIN;
 //#define SDCARD_CS_PIN    4
 //#define SDCARD_MOSI_PIN  11
 //#define SDCARD_SCK_PIN   13
-
 
 // Remember which mode we're doing
 int mode = 0;  // 0=stopped, 1=recording, 2=playing
@@ -92,7 +89,6 @@ void setup() {
     }
   }
 }
-
 
 void loop() {
   // First, read the buttons
@@ -129,7 +125,6 @@ void loop() {
   if (myInput == AUDIO_INPUT_MIC) adjustMicLevel();
 }
 
-
 void startRecording() {
   Serial.println("startRecording");
   if (SD.exists("RECORD.RAW")) {
@@ -154,7 +149,7 @@ void continueRecording() {
     // writes are used.
     memcpy(buffer, queue1.readBuffer(), 256);
     queue1.freeBuffer();
-    memcpy(buffer+256, queue1.readBuffer(), 256);
+    memcpy(buffer + 256, queue1.readBuffer(), 256);
     queue1.freeBuffer();
     // write all 512 bytes to the SD card
     elapsedMicros usec = 0;
@@ -169,8 +164,8 @@ void continueRecording() {
     // approximately 301700 us of audio, to allow time
     // for occasional high SD card latency, as long as
     // the average write time is under 5802 us.
-    //Serial.print("SD write, us=");
-    //Serial.println(usec);
+    // Serial.print("SD write, us=");
+    // Serial.println(usec);
   }
 }
 
@@ -186,7 +181,6 @@ void stopRecording() {
   }
   mode = 0;
 }
-
 
 void startPlaying() {
   Serial.println("startPlaying");
@@ -211,4 +205,3 @@ void adjustMicLevel() {
   // TODO: read the peak1 object and adjust sgtl5000_1.micGain()
   // if anyone gets this working, please submit a github pull request :-)
 }
-

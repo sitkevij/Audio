@@ -2,32 +2,26 @@
 //
 // http://www.pjrc.com/store/audio_tutorial_kit.html
 // https://hackaday.io/project/8292-microcontroller-audio-workshop-had-supercon-2015
-// 
+//
 // Part 2-3: Playing Samples
 
 // WAV files converted to code by wav2sketch
-#include "AudioSampleSnare.h"        // http://www.freesound.org/people/KEVOY/sounds/82583/
-#include "AudioSampleTomtom.h"       // http://www.freesound.org/people/zgump/sounds/86334/
-#include "AudioSampleHihat.h"        // http://www.freesound.org/people/mhc/sounds/102790/
-#include "AudioSampleKick.h"         // http://www.freesound.org/people/DWSD/sounds/171104/
-#include "AudioSampleGong.h"         // http://www.freesound.org/people/juskiddink/sounds/86773/
-#include "AudioSampleCashregister.h" // http://www.freesound.org/people/kiddpark/sounds/201159/
+#include "AudioSampleSnare.h"  // http://www.freesound.org/people/KEVOY/sounds/82583/
+#include "AudioSampleTomtom.h"  // http://www.freesound.org/people/zgump/sounds/86334/
+#include "AudioSampleHihat.h"  // http://www.freesound.org/people/mhc/sounds/102790/
+#include "AudioSampleKick.h"  // http://www.freesound.org/people/DWSD/sounds/171104/
+#include "AudioSampleGong.h"  // http://www.freesound.org/people/juskiddink/sounds/86773/
+#include "AudioSampleCashregister.h"  // http://www.freesound.org/people/kiddpark/sounds/201159/
 #include <Bounce.h>
-
 
 ///////////////////////////////////
 // copy the Design Tool code here
 ///////////////////////////////////
 
-
-
-
-
-// Bounce objects to read pushbuttons 
+// Bounce objects to read pushbuttons
 Bounce button0 = Bounce(0, 15);
 Bounce button1 = Bounce(1, 15);  // 15 ms debounce time
 Bounce button2 = Bounce(2, 15);
-
 
 void setup() {
   pinMode(0, INPUT_PULLUP);
@@ -58,30 +52,28 @@ void loop() {
     playMem3.play(AudioSampleHihat);
   }
 
-/*
-  int knob = analogRead(A3);
-  if (button0.fallingEdge()) {
-    if (knob < 512) {
-      playMem1.play(AudioSampleSnare);
-    } else {
-      playMem1.play(AudioSampleKick);
+  /*
+    int knob = analogRead(A3);
+    if (button0.fallingEdge()) {
+      if (knob < 512) {
+        playMem1.play(AudioSampleSnare);
+      } else {
+        playMem1.play(AudioSampleKick);
+      }
     }
-  }
-  if (button1.fallingEdge()) {
-    if (knob < 512) {
-      playMem2.play(AudioSampleTomtom);
-    } else {
-      playMem4.play(AudioSampleGong);
+    if (button1.fallingEdge()) {
+      if (knob < 512) {
+        playMem2.play(AudioSampleTomtom);
+      } else {
+        playMem4.play(AudioSampleGong);
+      }
     }
-  }
-  if (button2.fallingEdge()) {
-    if (knob < 512) {
-      playMem3.play(AudioSampleHihat);
-    } else {
-      playMem3.play(AudioSampleCashregister);
+    if (button2.fallingEdge()) {
+      if (knob < 512) {
+        playMem3.play(AudioSampleHihat);
+      } else {
+        playMem3.play(AudioSampleCashregister);
+      }
     }
-  }
-*/
-
+  */
 }
-

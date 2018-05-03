@@ -13,7 +13,8 @@
  * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice, development funding notice, and this permission
- * notice shall be included in all copies or substantial portions of the Software.
+ * notice shall be included in all copies or substantial portions of the
+ *Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -30,28 +31,30 @@
 #include "Arduino.h"
 #include "AudioStream.h"
 
-class AudioRecordQueue : public AudioStream
-{
-public:
-	AudioRecordQueue(void) : AudioStream(1, inputQueueArray),
-		userblock(NULL), head(0), tail(0), enabled(0) { }
-	void begin(void) {
-		clear();
-		enabled = 1;
-	}
-	int available(void);
-	void clear(void);
-	int16_t * readBuffer(void);
-	void freeBuffer(void);
-	void end(void) {
-		enabled = 0;
-	}
-	virtual void update(void);
-private:
-	audio_block_t *inputQueueArray[1];
-	audio_block_t * volatile queue[53];
-	audio_block_t *userblock;
-	volatile uint8_t head, tail, enabled;
+class AudioRecordQueue : public AudioStream {
+ public:
+  AudioRecordQueue(void)
+      : AudioStream(1, inputQueueArray),
+        userblock(NULL),
+        head(0),
+        tail(0),
+        enabled(0) {}
+  void begin(void) {
+    clear();
+    enabled = 1;
+  }
+  int available(void);
+  void clear(void);
+  int16_t *readBuffer(void);
+  void freeBuffer(void);
+  void end(void) { enabled = 0; }
+  virtual void update(void);
+
+ private:
+  audio_block_t *inputQueueArray[1];
+  audio_block_t *volatile queue[53];
+  audio_block_t *userblock;
+  volatile uint8_t head, tail, enabled;
 };
 
 #endif

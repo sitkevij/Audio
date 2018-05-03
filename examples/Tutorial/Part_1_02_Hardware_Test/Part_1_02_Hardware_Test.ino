@@ -2,7 +2,7 @@
 //
 // http://www.pjrc.com/store/audio_tutorial_kit.html
 // https://hackaday.io/project/8292-microcontroller-audio-workshop-had-supercon-2015
-// 
+//
 // Part 1-2: Test Hardware
 //
 // Simple beeping is pre-loaded on the Teensy, so
@@ -20,18 +20,18 @@
 #include <SerialFlash.h>
 #include <Bounce.h>
 
-AudioSynthWaveform    waveform1;
-AudioOutputI2S        i2s1;
-AudioConnection       patchCord1(waveform1, 0, i2s1, 0);
-AudioConnection       patchCord2(waveform1, 0, i2s1, 1);
-AudioControlSGTL5000  sgtl5000_1;
+AudioSynthWaveform waveform1;
+AudioOutputI2S i2s1;
+AudioConnection patchCord1(waveform1, 0, i2s1, 0);
+AudioConnection patchCord2(waveform1, 0, i2s1, 1);
+AudioControlSGTL5000 sgtl5000_1;
 
 Bounce button0 = Bounce(0, 15);
 Bounce button1 = Bounce(1, 15);
 Bounce button2 = Bounce(2, 15);
 
-int count=1;
-int a1history=0, a2history=0, a3history=0;
+int count = 1;
+int a1history = 0, a2history = 0, a3history = 0;
 
 void setup() {
   AudioMemory(10);
@@ -51,9 +51,6 @@ void setup() {
   a3history = analogRead(A3);
 }
 
-
-
-
 void loop() {
   Serial.print("Beep #");
   Serial.println(count);
@@ -65,9 +62,8 @@ void loop() {
   wait(1750);
 }
 
-void wait(unsigned int milliseconds)
-{
-  elapsedMillis msec=0;
+void wait(unsigned int milliseconds) {
+  elapsedMillis msec = 0;
 
   while (msec <= milliseconds) {
     button0.update();
@@ -99,5 +95,3 @@ void wait(unsigned int milliseconds)
     }
   }
 }
-
-

@@ -13,7 +13,8 @@
  * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice, development funding notice, and this permission
- * notice shall be included in all copies or substantial portions of the Software.
+ * notice shall be included in all copies or substantial portions of the
+ *Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -31,22 +32,22 @@
 #include "AudioStream.h"
 #include "SD.h"
 
-class AudioPlaySdRaw : public AudioStream
-{
-public:
-	AudioPlaySdRaw(void) : AudioStream(0, NULL) { begin(); }
-	void begin(void);
-	bool play(const char *filename);
-	void stop(void);
-	bool isPlaying(void) { return playing; }
-	uint32_t positionMillis(void);
-	uint32_t lengthMillis(void);
-	virtual void update(void);
-private:
-	File rawfile;
-	uint32_t file_size;
-	volatile uint32_t file_offset;
-	volatile bool playing;
+class AudioPlaySdRaw : public AudioStream {
+ public:
+  AudioPlaySdRaw(void) : AudioStream(0, NULL) { begin(); }
+  void begin(void);
+  bool play(const char *filename);
+  void stop(void);
+  bool isPlaying(void) { return playing; }
+  uint32_t positionMillis(void);
+  uint32_t lengthMillis(void);
+  virtual void update(void);
+
+ private:
+  File rawfile;
+  uint32_t file_size;
+  volatile uint32_t file_offset;
+  volatile bool playing;
 };
 
 #endif

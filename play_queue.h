@@ -13,7 +13,8 @@
  * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice, development funding notice, and this permission
- * notice shall be included in all copies or substantial portions of the Software.
+ * notice shall be included in all copies or substantial portions of the
+ *Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -30,23 +31,23 @@
 #include "Arduino.h"
 #include "AudioStream.h"
 
-class AudioPlayQueue : public AudioStream
-{
-public:
-	AudioPlayQueue(void) : AudioStream(0, NULL),
-		userblock(NULL), head(0), tail(0) { }
-	void play(int16_t data);
-	void play(const int16_t *data, uint32_t len);
-	bool available(void);
-	int16_t * getBuffer(void);
-	void playBuffer(void);
-	void stop(void);
-	//bool isPlaying(void) { return playing; }
-	virtual void update(void);
-private:
-	audio_block_t *queue[32];
-	audio_block_t *userblock;
-	volatile uint8_t head, tail;
+class AudioPlayQueue : public AudioStream {
+ public:
+  AudioPlayQueue(void)
+      : AudioStream(0, NULL), userblock(NULL), head(0), tail(0) {}
+  void play(int16_t data);
+  void play(const int16_t *data, uint32_t len);
+  bool available(void);
+  int16_t *getBuffer(void);
+  void playBuffer(void);
+  void stop(void);
+  // bool isPlaying(void) { return playing; }
+  virtual void update(void);
+
+ private:
+  audio_block_t *queue[32];
+  audio_block_t *userblock;
+  volatile uint8_t head, tail;
 };
 
 #endif

@@ -10,7 +10,8 @@
  * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice, development funding notice, and this permission
- * notice shall be included in all copies or substantial portions of the Software.
+ * notice shall be included in all copies or substantial portions of the
+ *Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -28,48 +29,48 @@
 #include "AudioStream.h"
 #include "DMAChannel.h"
 
-class AudioOutputADAT : public AudioStream
-{
-public:
-	AudioOutputADAT(void) : AudioStream(8, inputQueueArray) { begin(); }
-	virtual void update(void);
-	void begin(void);
-	static void mute_PCM(const bool mute);
-protected:
-	AudioOutputADAT(int dummy): AudioStream(8, inputQueueArray) {}
-	static void config_ADAT(void);
-	static audio_block_t *block_ch1_1st;
-	static audio_block_t *block_ch2_1st;
-	static audio_block_t *block_ch3_1st;
-	static audio_block_t *block_ch4_1st;
-	static audio_block_t *block_ch5_1st;
-	static audio_block_t *block_ch6_1st;
-	static audio_block_t *block_ch7_1st;
-	static audio_block_t *block_ch8_1st;
-	static bool update_responsibility;
-	static DMAChannel dma;
-	static void isr(void);
-	static void setI2SFreq(int freq);
-private:
-	//static uint32_t vucp;
-	static audio_block_t *block_ch1_2nd;
-	static audio_block_t *block_ch2_2nd;
-	static audio_block_t *block_ch3_2nd;
-	static audio_block_t *block_ch4_2nd;
-	static audio_block_t *block_ch5_2nd;
-	static audio_block_t *block_ch6_2nd;
-	static audio_block_t *block_ch7_2nd;
-	static audio_block_t *block_ch8_2nd;
-	static uint16_t ch1_offset;
-	static uint16_t ch2_offset;
-	static uint16_t ch3_offset;
-	static uint16_t ch4_offset;
-	static uint16_t ch5_offset;
-	static uint16_t ch6_offset;
-	static uint16_t ch7_offset;
-	static uint16_t ch8_offset;
-	audio_block_t *inputQueueArray[8];
-};
+class AudioOutputADAT : public AudioStream {
+ public:
+  AudioOutputADAT(void) : AudioStream(8, inputQueueArray) { begin(); }
+  virtual void update(void);
+  void begin(void);
+  static void mute_PCM(const bool mute);
 
+ protected:
+  AudioOutputADAT(int dummy) : AudioStream(8, inputQueueArray) {}
+  static void config_ADAT(void);
+  static audio_block_t *block_ch1_1st;
+  static audio_block_t *block_ch2_1st;
+  static audio_block_t *block_ch3_1st;
+  static audio_block_t *block_ch4_1st;
+  static audio_block_t *block_ch5_1st;
+  static audio_block_t *block_ch6_1st;
+  static audio_block_t *block_ch7_1st;
+  static audio_block_t *block_ch8_1st;
+  static bool update_responsibility;
+  static DMAChannel dma;
+  static void isr(void);
+  static void setI2SFreq(int freq);
+
+ private:
+  // static uint32_t vucp;
+  static audio_block_t *block_ch1_2nd;
+  static audio_block_t *block_ch2_2nd;
+  static audio_block_t *block_ch3_2nd;
+  static audio_block_t *block_ch4_2nd;
+  static audio_block_t *block_ch5_2nd;
+  static audio_block_t *block_ch6_2nd;
+  static audio_block_t *block_ch7_2nd;
+  static audio_block_t *block_ch8_2nd;
+  static uint16_t ch1_offset;
+  static uint16_t ch2_offset;
+  static uint16_t ch3_offset;
+  static uint16_t ch4_offset;
+  static uint16_t ch5_offset;
+  static uint16_t ch6_offset;
+  static uint16_t ch7_offset;
+  static uint16_t ch8_offset;
+  audio_block_t *inputQueueArray[8];
+};
 
 #endif

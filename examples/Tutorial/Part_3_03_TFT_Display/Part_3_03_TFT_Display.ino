@@ -2,34 +2,29 @@
 //
 // http://www.pjrc.com/store/audio_tutorial_kit.html
 // https://hackaday.io/project/8292-microcontroller-audio-workshop-had-supercon-2015
-// 
+//
 // Part 3-3: Add a TFT Display
 
 #include <ILI9341_t3.h>
-#include <font_Arial.h> // from ILI9341_t3
-
+#include <font_Arial.h>  // from ILI9341_t3
 
 ///////////////////////////////////
 // copy the Design Tool code here
 ///////////////////////////////////
 
-
-
-
-
-#define TFT_DC      20
-#define TFT_CS      21
-#define TFT_RST    255  // 255 = unused, connect to 3.3V
-#define TFT_MOSI     7
-#define TFT_SCLK    14
-#define TFT_MISO    12
-ILI9341_t3 tft = ILI9341_t3(TFT_CS, TFT_DC, TFT_RST, TFT_MOSI, TFT_SCLK, TFT_MISO);
-
+#define TFT_DC 20
+#define TFT_CS 21
+#define TFT_RST 255  // 255 = unused, connect to 3.3V
+#define TFT_MOSI 7
+#define TFT_SCLK 14
+#define TFT_MISO 12
+ILI9341_t3 tft =
+    ILI9341_t3(TFT_CS, TFT_DC, TFT_RST, TFT_MOSI, TFT_SCLK, TFT_MISO);
 
 // Use these with the Teensy Audio Shield
-#define SDCARD_CS_PIN    10
-#define SDCARD_MOSI_PIN  7
-#define SDCARD_SCK_PIN   14
+#define SDCARD_CS_PIN 10
+#define SDCARD_MOSI_PIN 7
+#define SDCARD_SCK_PIN 14
 
 // Use these with the Teensy 3.5 & 3.6 SD card
 //#define SDCARD_CS_PIN    BUILTIN_SDCARD
@@ -48,10 +43,10 @@ void setup() {
   tft.fillScreen(ILI9341_BLACK);
   tft.setTextColor(ILI9341_YELLOW);
   tft.setFont(Arial_24);
-  //tft.setTextSize(3);
+  // tft.setTextSize(3);
   tft.setCursor(40, 8);
   tft.println("Peak Meter");
-  
+
   AudioMemory(10);
   sgtl5000_1.enable();
   sgtl5000_1.volume(0.5);
@@ -71,13 +66,13 @@ elapsedMillis msecs;
 void loop() {
   if (playSdWav1.isPlaying() == false) {
     Serial.println("Start playing");
-    //playSdWav1.play("SDTEST1.WAV");
-    //playSdWav1.play("SDTEST2.WAV");
+    // playSdWav1.play("SDTEST1.WAV");
+    // playSdWav1.play("SDTEST2.WAV");
     playSdWav1.play("SDTEST3.WAV");
-    //playSdWav1.play("SDTEST4.WAV");
-    delay(10); // wait for library to parse WAV info
+    // playSdWav1.play("SDTEST4.WAV");
+    delay(10);  // wait for library to parse WAV info
   }
-  
+
   if (msecs > 15) {
     if (peak1.available() && peak2.available()) {
       msecs = 0;

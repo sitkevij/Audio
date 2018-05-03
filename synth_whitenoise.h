@@ -13,7 +13,8 @@
  * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice, development funding notice, and this permission
- * notice shall be included in all copies or substantial portions of the Software.
+ * notice shall be included in all copies or substantial portions of the
+ *Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -30,23 +31,25 @@
 #include "AudioStream.h"
 #include "utility/dspinst.h"
 
-class AudioSynthNoiseWhite : public AudioStream
-{
-public:
-	AudioSynthNoiseWhite() : AudioStream(0, NULL) {
-		level = 0;
-		seed = 1 + instance_count++;
-	}
-	void amplitude(float n) {
-		if (n < 0.0) n = 0.0;
-		else if (n > 1.0) n = 1.0;
-		level = (int32_t)(n * 65536.0);
-	}
-	virtual void update(void);
-private:
-	int32_t  level; // 0=off, 65536=max
-	uint32_t seed;  // must start at 1
-	static uint16_t instance_count;
+class AudioSynthNoiseWhite : public AudioStream {
+ public:
+  AudioSynthNoiseWhite() : AudioStream(0, NULL) {
+    level = 0;
+    seed = 1 + instance_count++;
+  }
+  void amplitude(float n) {
+    if (n < 0.0)
+      n = 0.0;
+    else if (n > 1.0)
+      n = 1.0;
+    level = (int32_t)(n * 65536.0);
+  }
+  virtual void update(void);
+
+ private:
+  int32_t level;  // 0=off, 65536=max
+  uint32_t seed;  // must start at 1
+  static uint16_t instance_count;
 };
 
 #endif

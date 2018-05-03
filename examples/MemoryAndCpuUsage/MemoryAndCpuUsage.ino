@@ -12,7 +12,6 @@
 //
 // This example code is in the public domain.
 
-
 #include <Audio.h>
 #include <Wire.h>
 #include <SPI.h>
@@ -20,23 +19,22 @@
 #include <SerialFlash.h>
 
 // GUItool: begin automatically generated code
-AudioSynthWaveformSine   sine1;          //xy=125,221
-AudioSynthNoisePink      pink1;          //xy=133,121
-AudioEffectEnvelope      envelope1;      //xy=298,133
-AudioEffectEnvelope      envelope2;      //xy=302,197
-AudioAnalyzeFFT256       fft256_1;       //xy=304,272
-AudioMixer4              mixer1;         //xy=486,163
-AudioOutputI2S           i2s1;           //xy=640,161
-AudioConnection          patchCord1(sine1, envelope2);
-AudioConnection          patchCord2(sine1, fft256_1);
-AudioConnection          patchCord3(pink1, envelope1);
-AudioConnection          patchCord4(envelope1, 0, mixer1, 0);
-AudioConnection          patchCord5(envelope2, 0, mixer1, 1);
-AudioConnection          patchCord6(mixer1, 0, i2s1, 0);
-AudioConnection          patchCord7(mixer1, 0, i2s1, 1);
-AudioControlSGTL5000     sgtl5000_1;     //xy=517,297
+AudioSynthWaveformSine sine1;   // xy=125,221
+AudioSynthNoisePink pink1;      // xy=133,121
+AudioEffectEnvelope envelope1;  // xy=298,133
+AudioEffectEnvelope envelope2;  // xy=302,197
+AudioAnalyzeFFT256 fft256_1;    // xy=304,272
+AudioMixer4 mixer1;             // xy=486,163
+AudioOutputI2S i2s1;            // xy=640,161
+AudioConnection patchCord1(sine1, envelope2);
+AudioConnection patchCord2(sine1, fft256_1);
+AudioConnection patchCord3(pink1, envelope1);
+AudioConnection patchCord4(envelope1, 0, mixer1, 0);
+AudioConnection patchCord5(envelope2, 0, mixer1, 1);
+AudioConnection patchCord6(mixer1, 0, i2s1, 0);
+AudioConnection patchCord7(mixer1, 0, i2s1, 1);
+AudioControlSGTL5000 sgtl5000_1;  // xy=517,297
 // GUItool: end automatically generated code
-
 
 void setup() {
   // give the audio library some memory.  We'll be able
@@ -69,10 +67,8 @@ void setup() {
   mixer1.gain(1, 0.5);
 }
 
-
 int count = 0;
 int speed = 60;
-
 
 void loop() {
   // a simple sequencer, count goes from 0 to 15
@@ -87,21 +83,21 @@ void loop() {
 
   // play the bass tone every 8th time
   if (count == 4) {
-	sine1.amplitude(0.6);
-	sine1.frequency(100);
-	envelope2.noteOn();
+    sine1.amplitude(0.6);
+    sine1.frequency(100);
+    envelope2.noteOn();
   }
   if (count == 12) {
-	sine1.amplitude(0.3);
-	sine1.frequency(120);
-	envelope2.noteOn();
+    sine1.amplitude(0.3);
+    sine1.frequency(120);
+    envelope2.noteOn();
   }
 
   // turn off the sine wave, which saves
   // CPU power (especially since the sine goes
   // to a CPU-hungry FFT analysis)
   if (count == 6) {
-	sine1.amplitude(0);
+    sine1.amplitude(0);
   }
 
   // check for incoming characters from the serial monitor
@@ -149,6 +145,4 @@ void loop() {
 
   // very simple timing   :-)
   delay(speed);
-
 }
-

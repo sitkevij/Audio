@@ -13,7 +13,8 @@
  * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice, development funding notice, and this permission
- * notice shall be included in all copies or substantial portions of the Software.
+ * notice shall be included in all copies or substantial portions of the
+ *Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -28,17 +29,21 @@
 #define Audio_h_
 
 #if TEENSYDUINO < 120
-#error "Teensyduino version 1.20 or later is required to compile the Audio library."
+#error \
+    "Teensyduino version 1.20 or later is required to compile the Audio library."
 #endif
 #ifdef __AVR__
-#error "The Audio Library only works with Teensy 3.X.  Teensy 2.0 is unsupported."
+#error \
+    "The Audio Library only works with Teensy 3.X.  Teensy 2.0 is unsupported."
 #endif
 
 #include "DMAChannel.h"
 #if !defined(DMACHANNEL_HAS_BEGIN) || !defined(DMACHANNEL_HAS_BOOLEAN_CTOR)
 #error "You need to update DMAChannel.h & DMAChannel.cpp"
-#error "https://github.com/PaulStoffregen/cores/blob/master/teensy3/DMAChannel.h"
-#error "https://github.com/PaulStoffregen/cores/blob/master/teensy3/DMAChannel.cpp"
+#error \
+    "https://github.com/PaulStoffregen/cores/blob/master/teensy3/DMAChannel.h"
+#error \
+    "https://github.com/PaulStoffregen/cores/blob/master/teensy3/DMAChannel.cpp"
 #endif
 
 // When changing multiple audio object settings that must update at
@@ -53,7 +58,7 @@
 // while you make changes.
 //
 #define AudioNoInterrupts() (NVIC_DISABLE_IRQ(IRQ_SOFTWARE))
-#define AudioInterrupts()   (NVIC_ENABLE_IRQ(IRQ_SOFTWARE))
+#define AudioInterrupts() (NVIC_ENABLE_IRQ(IRQ_SOFTWARE))
 
 // include all the library headers, so a sketch can use a single
 // #include <Audio.h> to get the whole library

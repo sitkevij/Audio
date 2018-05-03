@@ -13,7 +13,8 @@
  * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice, development funding notice, and this permission
- * notice shall be included in all copies or substantial portions of the Software.
+ * notice shall be included in all copies or substantial portions of the
+ *Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -24,14 +25,14 @@
  * THE SOFTWARE.
  */
 
-//Adapted to PT8211, Frank Bösing.
+// Adapted to PT8211, Frank Bösing.
 
 #ifndef output_pt8211_h_
 #define output_pt8211_h_
 
-	//uncomment to enable oversampling:
+// uncomment to enable oversampling:
 #define AUDIO_PT8211_OVERSAMPLING
-	//uncomment ONE of these to define interpolation type for oversampling:
+// uncomment ONE of these to define interpolation type for oversampling:
 // #define AUDIO_PT8211_INTERPOLATION_LINEAR
 #define AUDIO_PT8211_INTERPOLATION_CIC
 
@@ -39,34 +40,31 @@
 #include "AudioStream.h"
 #include "DMAChannel.h"
 
-class AudioOutputPT8211 : public AudioStream
-{
-public:
-	AudioOutputPT8211(void) : AudioStream(2, inputQueueArray) { begin(); }
-	virtual void update(void);
-	void begin(void);
-	//friend class AudioInputI2S;
-protected:
-	//AudioOutputI2S(int dummy): AudioStream(2, inputQueueArray) {} // to be used only inside AudioOutputI2Sslave !!
-	static void config_i2s(void);
-	static audio_block_t *block_left_1st;
-	static audio_block_t *block_right_1st;
-	static bool update_responsibility;
-	static DMAChannel dma;
-	static void isr(void)
-	#if defined(AUDIO_PT8211_OVERSAMPLING)
-		__attribute__((optimize("unroll-loops")))
-	#endif
-	;
-private:
-	static audio_block_t *block_left_2nd;
-	static audio_block_t *block_right_2nd;
-	static uint16_t block_left_offset;
-	static uint16_t block_right_offset;
-	audio_block_t *inputQueueArray[2];
+class AudioOutputPT8211 : public AudioStream {
+ public:
+  AudioOutputPT8211(void) : AudioStream(2, inputQueueArray) { begin(); }
+  virtual void update(void);
+  void begin(void);
+  // friend class AudioInputI2S;
+ protected:
+  // AudioOutputI2S(int dummy): AudioStream(2, inputQueueArray) {} // to be used
+  // only inside AudioOutputI2Sslave !!
+  static void config_i2s(void);
+  static audio_block_t *block_left_1st;
+  static audio_block_t *block_right_1st;
+  static bool update_responsibility;
+  static DMAChannel dma;
+  static void isr(void)
+#if defined(AUDIO_PT8211_OVERSAMPLING)
+      __attribute__((optimize("unroll-loops")))
+#endif
+      ;
+ private:
+  static audio_block_t *block_left_2nd;
+  static audio_block_t *block_right_2nd;
+  static uint16_t block_left_offset;
+  static uint16_t block_right_offset;
+  audio_block_t *inputQueueArray[2];
 };
-
-
-
 
 #endif

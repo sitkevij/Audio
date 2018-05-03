@@ -222,8 +222,6 @@ AudioControlSGTL5000     sgtl5000_1;     //xy=155,192
 // GUItool: end automatically generated code
 */
 
-void loop() {
-}
+void loop() {}
 
-void setup() {
-}
+void setup() {}

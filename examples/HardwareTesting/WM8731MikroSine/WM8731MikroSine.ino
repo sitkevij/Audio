@@ -26,13 +26,12 @@
 #include <SerialFlash.h>
 
 // GUItool: begin automatically generated code
-AudioSynthWaveform       waveform1;      //xy=110,75
-AudioOutputI2Sslave      i2ss1;          //xy=303,78
-AudioConnection          patchCord1(waveform1, 0, i2ss1, 0);
-AudioConnection          patchCord2(waveform1, 0, i2ss1, 1);
-AudioControlWM8731master wm8731m1;       //xy=230,154
+AudioSynthWaveform waveform1;  // xy=110,75
+AudioOutputI2Sslave i2ss1;     // xy=303,78
+AudioConnection patchCord1(waveform1, 0, i2ss1, 0);
+AudioConnection patchCord2(waveform1, 0, i2ss1, 1);
+AudioControlWM8731master wm8731m1;  // xy=230,154
 // GUItool: end automatically generated code
-
 
 void setup() {
   wm8731m1.enable();
@@ -46,6 +45,4 @@ void setup() {
   wm8731m1.volume(0.50);
 }
 
-
-void loop() {
-}
+void loop() {}

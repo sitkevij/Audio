@@ -14,7 +14,8 @@
  * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice, development funding notice, and this permission
- * notice shall be included in all copies or substantial portions of the Software.
+ * notice shall be included in all copies or substantial portions of the
+ Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -31,28 +32,31 @@
 #include "Arduino.h"
 #include "AudioStream.h"
 
-class AudioEffectBitcrusher : public AudioStream
-{
-public:
-	AudioEffectBitcrusher(void)
-	  : AudioStream(1, inputQueueArray) {}
-	void bits(uint8_t b) {
-		if (b > 16) b = 16;
-		else if (b == 0) b = 1;
-		crushBits = b;
-	}
-        void sampleRate(float hz) {
-		int n = (AUDIO_SAMPLE_RATE_EXACT / hz) + 0.5;
-		if (n < 1) n = 1;
-		else if (n > 64) n = 64;
-		sampleStep = n;
-	}
-	virtual void update(void);
-	
-private:
-	uint8_t crushBits; // 16 = off
-	uint8_t sampleStep; // the number of samples to double up. This simple technique only allows a few stepped positions.
-	audio_block_t *inputQueueArray[1];
+class AudioEffectBitcrusher : public AudioStream {
+ public:
+  AudioEffectBitcrusher(void) : AudioStream(1, inputQueueArray) {}
+  void bits(uint8_t b) {
+    if (b > 16)
+      b = 16;
+    else if (b == 0)
+      b = 1;
+    crushBits = b;
+  }
+  void sampleRate(float hz) {
+    int n = (AUDIO_SAMPLE_RATE_EXACT / hz) + 0.5;
+    if (n < 1)
+      n = 1;
+    else if (n > 64)
+      n = 64;
+    sampleStep = n;
+  }
+  virtual void update(void);
+
+ private:
+  uint8_t crushBits;   // 16 = off
+  uint8_t sampleStep;  // the number of samples to double up. This simple
+                       // technique only allows a few stepped positions.
+  audio_block_t *inputQueueArray[1];
 };
 
 #endif

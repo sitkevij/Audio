@@ -13,7 +13,8 @@
  * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice, development funding notice, and this permission
- * notice shall be included in all copies or substantial portions of the Software.
+ * notice shall be included in all copies or substantial portions of the
+ *Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -30,24 +31,20 @@
 #include "Arduino.h"
 #include "AudioStream.h"
 
-class AudioAnalyzeRMS : public AudioStream
-{
-private:
-	audio_block_t *inputQueueArray[1];
-	int64_t accum;
-	uint32_t count;
+class AudioAnalyzeRMS : public AudioStream {
+ private:
+  audio_block_t *inputQueueArray[1];
+  int64_t accum;
+  uint32_t count;
 
-public:
-	AudioAnalyzeRMS(void) : AudioStream(1, inputQueueArray) {
-		accum = 0;
-		count = 0;
-	}
-	bool available(void) {
-		return count > 0;
-	}
-	float read(void);
-	virtual void update(void);
+ public:
+  AudioAnalyzeRMS(void) : AudioStream(1, inputQueueArray) {
+    accum = 0;
+    count = 0;
+  }
+  bool available(void) { return count > 0; }
+  float read(void);
+  virtual void update(void);
 };
 
 #endif
-

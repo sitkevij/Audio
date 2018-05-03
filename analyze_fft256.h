@@ -13,7 +13,8 @@
  * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice, development funding notice, and this permission
- * notice shall be included in all copies or substantial portions of the Software.
+ * notice shall be included in all copies or substantial portions of the
+ *Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -46,73 +47,74 @@ extern const int16_t AudioWindowCosine256[];
 extern const int16_t AudioWindowTukey256[];
 }
 
-class AudioAnalyzeFFT256 : public AudioStream
-{
-public:
-	AudioAnalyzeFFT256() : AudioStream(1, inputQueueArray),
-	  window(AudioWindowHanning256), count(0), outputflag(false) {
-		arm_cfft_radix4_init_q15(&fft_inst, 256, 0, 1);
+class AudioAnalyzeFFT256 : public AudioStream {
+ public:
+  AudioAnalyzeFFT256()
+      : AudioStream(1, inputQueueArray),
+        window(AudioWindowHanning256),
+        count(0),
+        outputflag(false) {
+    arm_cfft_radix4_init_q15(&fft_inst, 256, 0, 1);
 #if AUDIO_BLOCK_SAMPLES == 128
-		prevblock = NULL;
-		naverage = 8;
+    prevblock = NULL;
+    naverage = 8;
 #elif AUDIO_BLOCK_SAMPLES == 64
-		prevblocks[0] = NULL;
-		prevblocks[1] = NULL;
-		prevblocks[2] = NULL;
+    prevblocks[0] = NULL;
+    prevblocks[1] = NULL;
+    prevblocks[2] = NULL;
 #endif
-	}
-	bool available() {
-		if (outputflag == true) {
-			outputflag = false;
-			return true;
-		}
-		return false;
-	}
-	float read(unsigned int binNumber) {
-		if (binNumber > 127) return 0.0;
-		return (float)(output[binNumber]) * (1.0 / 16384.0);
-	}
-	float read(unsigned int binFirst, unsigned int binLast) {
-		if (binFirst > binLast) {
-			unsigned int tmp = binLast;
-			binLast = binFirst;
-			binFirst = tmp;
-		}
-		if (binFirst > 127) return 0.0;
-		if (binLast > 127) binLast = 127;
-		uint32_t sum = 0;
-		do {
-			sum += output[binFirst++];
-		} while (binFirst <= binLast);
-		return (float)sum * (1.0 / 16384.0);
-	}
-	void averageTogether(uint8_t n) {
+  }
+  bool available() {
+    if (outputflag == true) {
+      outputflag = false;
+      return true;
+    }
+    return false;
+  }
+  float read(unsigned int binNumber) {
+    if (binNumber > 127) return 0.0;
+    return (float)(output[binNumber]) * (1.0 / 16384.0);
+  }
+  float read(unsigned int binFirst, unsigned int binLast) {
+    if (binFirst > binLast) {
+      unsigned int tmp = binLast;
+      binLast = binFirst;
+      binFirst = tmp;
+    }
+    if (binFirst > 127) return 0.0;
+    if (binLast > 127) binLast = 127;
+    uint32_t sum = 0;
+    do {
+      sum += output[binFirst++];
+    } while (binFirst <= binLast);
+    return (float)sum * (1.0 / 16384.0);
+  }
+  void averageTogether(uint8_t n) {
 #if AUDIO_BLOCK_SAMPLES == 128
-		if (n == 0) n = 1;
-		naverage = n;
+    if (n == 0) n = 1;
+    naverage = n;
 #endif
-	}
-	void windowFunction(const int16_t *w) {
-		window = w;
-	}
-	virtual void update(void);
-	uint16_t output[128] __attribute__ ((aligned (4)));
-private:
-	const int16_t *window;
+  }
+  void windowFunction(const int16_t *w) { window = w; }
+  virtual void update(void);
+  uint16_t output[128] __attribute__((aligned(4)));
+
+ private:
+  const int16_t *window;
 #if AUDIO_BLOCK_SAMPLES == 128
-	audio_block_t *prevblock;
+  audio_block_t *prevblock;
 #elif AUDIO_BLOCK_SAMPLES == 64
-	audio_block_t *prevblocks[3];
+  audio_block_t *prevblocks[3];
 #endif
-	int16_t buffer[512] __attribute__ ((aligned (4)));
+  int16_t buffer[512] __attribute__((aligned(4)));
 #if AUDIO_BLOCK_SAMPLES == 128
-	uint32_t sum[128];
-	uint8_t naverage;
+  uint32_t sum[128];
+  uint8_t naverage;
 #endif
-	uint8_t count;
-	volatile bool outputflag;
-	audio_block_t *inputQueueArray[1];
-	arm_cfft_radix4_instance_q15 fft_inst;
+  uint8_t count;
+  volatile bool outputflag;
+  audio_block_t *inputQueueArray[1];
+  arm_cfft_radix4_instance_q15 fft_inst;
 };
 
 #endif

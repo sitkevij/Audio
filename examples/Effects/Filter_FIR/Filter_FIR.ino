@@ -38,17 +38,16 @@ The audio board uses the following pins.
 #define FILTER_PIN 0
 
 // debounce the passthru and filter switching pins
-Bounce b_passthru = Bounce(PASSTHRU_PIN,15);
-Bounce b_filter   = Bounce(FILTER_PIN,15);
+Bounce b_passthru = Bounce(PASSTHRU_PIN, 15);
+Bounce b_filter = Bounce(FILTER_PIN, 15);
 
-//const int myInput = AUDIO_INPUT_MIC;
+// const int myInput = AUDIO_INPUT_MIC;
 const int myInput = AUDIO_INPUT_LINEIN;
 
-
-AudioInputI2S       audioInput;         // audio shield: mic or line-in
-AudioFilterFIR      myFilterL;
-AudioFilterFIR      myFilterR;
-AudioOutputI2S      audioOutput;        // audio shield: headphones & line-out
+AudioInputI2S audioInput;  // audio shield: mic or line-in
+AudioFilterFIR myFilterL;
+AudioFilterFIR myFilterR;
+AudioOutputI2S audioOutput;  // audio shield: headphones & line-out
 
 // Create Audio connections between the components
 // Route audio into the left and right filters
@@ -59,20 +58,17 @@ AudioConnection c3(myFilterL, 0, audioOutput, 0);
 AudioConnection c4(myFilterR, 0, audioOutput, 1);
 AudioControlSGTL5000 audioShield;
 
-
 struct fir_filter {
   short *coeffs;
-  short num_coeffs;    // num_coeffs must be an even number, 4 or higher
+  short num_coeffs;  // num_coeffs must be an even number, 4 or higher
 };
 
 // index of current filter. Start with the low pass.
 int fir_idx = 0;
 struct fir_filter fir_list[] = {
-  {low_pass , 100},    // low pass with cutoff at 1kHz and -60dB at 2kHz
-  {band_pass, 100},    // bandpass 1200Hz - 1700Hz
-  {NULL,      0}
-};
-
+    {low_pass, 100},   // low pass with cutoff at 1kHz and -60dB at 2kHz
+    {band_pass, 100},  // bandpass 1200Hz - 1700Hz
+    {NULL, 0}};
 
 void setup() {
   Serial.begin(9600);
@@ -87,20 +83,20 @@ void setup() {
   audioShield.enable();
   audioShield.inputSelect(myInput);
   audioShield.volume(0.5);
-  
+
   // Warn that the passthru pin is grounded
-  if(!digitalRead(PASSTHRU_PIN)) {
+  if (!digitalRead(PASSTHRU_PIN)) {
     Serial.print("PASSTHRU_PIN (");
     Serial.print(PASSTHRU_PIN);
     Serial.println(") is grounded");
   }
 
   // Warn that the filter pin is grounded
-  if(!digitalRead(FILTER_PIN)) {
+  if (!digitalRead(FILTER_PIN)) {
     Serial.print("FILTER_PIN (");
     Serial.print(FILTER_PIN);
     Serial.println(") is grounded");
-  }  
+  }
   // Initialize the filter
   myFilterL.begin(fir_list[0].coeffs, fir_list[0].num_coeffs);
   myFilterR.begin(fir_list[0].coeffs, fir_list[0].num_coeffs);
@@ -114,20 +110,19 @@ int old_idx = -1;
 int volume = 0;
 unsigned long last_time = millis();
 
-void loop()
-{
+void loop() {
   // Volume control
   int n = analogRead(15);
   if (n != volume) {
     volume = n;
-    //uncomment this line if your audio shield has the volume pot
-    //audioShield.volume((float)n / 1023);
+    // uncomment this line if your audio shield has the volume pot
+    // audioShield.volume((float)n / 1023);
   }
-  
+
   // update the two buttons
   b_passthru.update();
   b_filter.update();
-  
+
   // If the passthru button is pushed, save the current
   // filter index and then switch the filter to passthru
   if (b_passthru.fallingEdge()) {
@@ -135,16 +130,16 @@ void loop()
     myFilterL.begin(FIR_PASSTHRU, 0);
     myFilterR.begin(FIR_PASSTHRU, 0);
   }
-  
+
   // If passthru button is released, restore previous filter
   if (b_passthru.risingEdge()) {
-    if(old_idx != -1) {
+    if (old_idx != -1) {
       myFilterL.begin(fir_list[fir_idx].coeffs, fir_list[fir_idx].num_coeffs);
       myFilterR.begin(fir_list[fir_idx].coeffs, fir_list[fir_idx].num_coeffs);
     }
     old_idx = -1;
   }
-  
+
   // switch to next filter in the list
   if (b_filter.fallingEdge()) {
     fir_idx++;
@@ -158,18 +153,13 @@ void loop()
   if (millis() - last_time >= 2500) {
     Serial.print("Proc = ");
     Serial.print(AudioProcessorUsage());
-    Serial.print(" (");    
+    Serial.print(" (");
     Serial.print(AudioProcessorUsageMax());
     Serial.print("),  Mem = ");
     Serial.print(AudioMemoryUsage());
-    Serial.print(" (");    
+    Serial.print(" (");
     Serial.print(AudioMemoryUsageMax());
     Serial.println(")");
     last_time = millis();
   }
-
-
 }
-
-
-

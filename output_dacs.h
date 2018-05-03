@@ -13,7 +13,8 @@
  * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice, development funding notice, and this permission
- * notice shall be included in all copies or substantial portions of the Software.
+ * notice shall be included in all copies or substantial portions of the
+ *Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -31,23 +32,23 @@
 #include "AudioStream.h"
 #include "DMAChannel.h"
 
-class AudioOutputAnalogStereo : public AudioStream
-{
-public:
-	AudioOutputAnalogStereo(void) : AudioStream(2, inputQueueArray) { begin(); }
-	virtual void update(void);
-	void begin(void);
-	void analogReference(int ref);
-private:
-	static audio_block_t *block_left_1st;
-	static audio_block_t *block_left_2nd;
-	static audio_block_t *block_right_1st;
-	static audio_block_t *block_right_2nd;
-	static audio_block_t block_silent;
-	static bool update_responsibility;
-	audio_block_t *inputQueueArray[2];
-	static DMAChannel dma;
-	static void isr(void);
+class AudioOutputAnalogStereo : public AudioStream {
+ public:
+  AudioOutputAnalogStereo(void) : AudioStream(2, inputQueueArray) { begin(); }
+  virtual void update(void);
+  void begin(void);
+  void analogReference(int ref);
+
+ private:
+  static audio_block_t *block_left_1st;
+  static audio_block_t *block_left_2nd;
+  static audio_block_t *block_right_1st;
+  static audio_block_t *block_right_2nd;
+  static audio_block_t block_silent;
+  static bool update_responsibility;
+  audio_block_t *inputQueueArray[2];
+  static DMAChannel dma;
+  static void isr(void);
 };
 
 #endif

@@ -10,7 +10,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
+ * The above copyright notice and this permission notice shall be included in
+ *all
  * copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
@@ -28,17 +29,17 @@
 #include "Arduino.h"
 #include "AudioStream.h"
 
-class AudioEffectWaveshaper : public AudioStream
-{
-  public:
-    AudioEffectWaveshaper(void): AudioStream(1, inputQueueArray) {}
-    ~AudioEffectWaveshaper();
-    virtual void update(void);
-    void shape(float* waveshape, int length);
-  private:
-    audio_block_t *inputQueueArray[1];
-    int16_t* waveshape;
-    int16_t lerpshift;
+class AudioEffectWaveshaper : public AudioStream {
+ public:
+  AudioEffectWaveshaper(void) : AudioStream(1, inputQueueArray) {}
+  ~AudioEffectWaveshaper();
+  virtual void update(void);
+  void shape(float* waveshape, int length);
+
+ private:
+  audio_block_t* inputQueueArray[1];
+  int16_t* waveshape;
+  int16_t lerpshift;
 };
 
 #endif

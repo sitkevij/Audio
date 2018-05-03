@@ -13,7 +13,8 @@
  * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice, development funding notice, and this permission
- * notice shall be included in all copies or substantial portions of the Software.
+ * notice shall be included in all copies or substantial portions of the
+ *Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -31,30 +32,30 @@
 #include "AudioStream.h"
 #include "DMAChannel.h"
 
-class AudioInputI2S : public AudioStream
-{
-public:
-	AudioInputI2S(void) : AudioStream(0, NULL) { begin(); }
-	virtual void update(void);
-	void begin(void);
-protected:	
-	AudioInputI2S(int dummy): AudioStream(0, NULL) {} // to be used only inside AudioInputI2Sslave !!
-	static bool update_responsibility;
-	static DMAChannel dma;
-	static void isr(void);
-private:
-	static audio_block_t *block_left;
-	static audio_block_t *block_right;
-	static uint16_t block_offset;
+class AudioInputI2S : public AudioStream {
+ public:
+  AudioInputI2S(void) : AudioStream(0, NULL) { begin(); }
+  virtual void update(void);
+  void begin(void);
+
+ protected:
+  AudioInputI2S(int dummy)
+      : AudioStream(0, NULL) {}  // to be used only inside AudioInputI2Sslave !!
+  static bool update_responsibility;
+  static DMAChannel dma;
+  static void isr(void);
+
+ private:
+  static audio_block_t *block_left;
+  static audio_block_t *block_right;
+  static uint16_t block_offset;
 };
 
-
-class AudioInputI2Sslave : public AudioInputI2S
-{
-public:
-	AudioInputI2Sslave(void) : AudioInputI2S(0) { begin(); }
-	void begin(void);
-	friend void dma_ch1_isr(void);
+class AudioInputI2Sslave : public AudioInputI2S {
+ public:
+  AudioInputI2Sslave(void) : AudioInputI2S(0) { begin(); }
+  void begin(void);
+  friend void dma_ch1_isr(void);
 };
 
 #endif

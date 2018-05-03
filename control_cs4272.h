@@ -16,7 +16,8 @@
  * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice, development funding notice, and this permission
- * notice shall be included in all copies or substantial portions of the Software.
+ * notice shall be included in all copies or substantial portions of the
+ *Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -32,35 +33,34 @@
 
 #include "AudioControl.h"
 
-class AudioControlCS4272 : public AudioControl
-{
-public:
-	bool enable(void);
-	bool disable(void) { return false; }
-	bool volume(float n) { return volumeInteger(n * 127 + 0.499); }
-	bool inputLevel(float n) { return false; }
-	bool inputSelect(int n) { return false; }
+class AudioControlCS4272 : public AudioControl {
+ public:
+  bool enable(void);
+  bool disable(void) { return false; }
+  bool volume(float n) { return volumeInteger(n * 127 + 0.499); }
+  bool inputLevel(float n) { return false; }
+  bool inputSelect(int n) { return false; }
 
-	bool volume(float left, float right);
-	bool dacVolume(float n) { return volumeInteger(n * 127 + 0.499); }
-	bool dacVolume(float left, float right);
+  bool volume(float left, float right);
+  bool dacVolume(float n) { return volumeInteger(n * 127 + 0.499); }
+  bool dacVolume(float left, float right);
 
-	bool muteOutput(void);
-	bool unmuteOutput(void);
+  bool muteOutput(void);
+  bool unmuteOutput(void);
 
-	bool muteInput(void);
-	bool unmuteInput(void);
+  bool muteInput(void);
+  bool unmuteInput(void);
 
-	bool enableDither(void);
-	bool disableDither(void);
+  bool enableDither(void);
+  bool disableDither(void);
 
-protected:
-	bool write(unsigned int reg, unsigned int val);
-	bool volumeInteger(unsigned int n); // range: 0x0 to 0x7F
-	
-	uint8_t regLocal[8];
+ protected:
+  bool write(unsigned int reg, unsigned int val);
+  bool volumeInteger(unsigned int n);  // range: 0x0 to 0x7F
 
-	void initLocalRegs(void);
+  uint8_t regLocal[8];
+
+  void initLocalRegs(void);
 };
 
 // For sample rate ratio select (only single speed tested)

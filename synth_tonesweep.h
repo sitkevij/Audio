@@ -29,14 +29,11 @@
 //                A u d i o S y n t h T o n e S w e e p
 // Written by Pete (El Supremo) Feb 2014
 
-class AudioSynthToneSweep : public AudioStream
-{
-public:
-  AudioSynthToneSweep(void) :
-  AudioStream(0,NULL), sweep_busy(0)
-  { }
+class AudioSynthToneSweep : public AudioStream {
+ public:
+  AudioSynthToneSweep(void) : AudioStream(0, NULL), sweep_busy(0) {}
 
-  boolean play(float t_amp,int t_lo,int t_hi,float t_time);
+  boolean play(float t_amp, int t_lo, int t_hi, float t_time);
   virtual void update(void);
   unsigned char isPlaying(void);
   float read(void) {
@@ -48,7 +45,7 @@ public:
     return (float)(freq >> 32);
   }
 
-private:
+ private:
   short tone_amp;
   unsigned int tone_lo;
   unsigned int tone_hi;

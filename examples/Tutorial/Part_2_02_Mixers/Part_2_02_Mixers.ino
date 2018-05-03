@@ -2,21 +2,17 @@
 //
 // http://www.pjrc.com/store/audio_tutorial_kit.html
 // https://hackaday.io/project/8292-microcontroller-audio-workshop-had-supercon-2015
-// 
+//
 // Part 2-2: Mixers & Playing Multiple Sounds
-
 
 ///////////////////////////////////
 // copy the Design Tool code here
 ///////////////////////////////////
 
-
-
-
 // Use these with the Teensy Audio Shield
-#define SDCARD_CS_PIN    10
-#define SDCARD_MOSI_PIN  7
-#define SDCARD_SCK_PIN   14
+#define SDCARD_CS_PIN 10
+#define SDCARD_MOSI_PIN 7
+#define SDCARD_SCK_PIN 14
 
 // Use these with the Teensy 3.5 & 3.6 SD card
 //#define SDCARD_CS_PIN    BUILTIN_SDCARD
@@ -41,7 +37,7 @@ void setup() {
       delay(500);
     }
   }
-  pinMode(13, OUTPUT); // LED on pin 13
+  pinMode(13, OUTPUT);  // LED on pin 13
   mixer1.gain(0, 0.5);
   mixer1.gain(1, 0.5);
   mixer2.gain(0, 0.5);
@@ -53,12 +49,12 @@ void loop() {
   if (playSdWav1.isPlaying() == false) {
     Serial.println("Start playing 1");
     playSdWav1.play("SDTEST1.WAV");
-    delay(10); // wait for library to parse WAV info
+    delay(10);  // wait for library to parse WAV info
   }
   if (playSdWav2.isPlaying() == false) {
     Serial.println("Start playing 2");
     playSdWav2.play("SDTEST4.WAV");
-    delay(10); // wait for library to parse WAV info
+    delay(10);  // wait for library to parse WAV info
   }
   // uncomment this code to allow Knob A3 to pan between songs
   /*
@@ -71,13 +67,3 @@ void loop() {
   mixer2.gain(1, gain2);
   */
 }
-
-
-
-
-
-
-
-
-
-

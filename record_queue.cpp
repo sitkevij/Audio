@@ -13,7 +13,8 @@
  * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice, development funding notice, and this permission
- * notice shall be included in all copies or substantial portions of the Software.
+ * notice shall be included in all copies or substantial portions of the
+ *Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -28,72 +29,64 @@
 #include "record_queue.h"
 #include "utility/dspinst.h"
 
+int AudioRecordQueue::available(void) {
+  uint32_t h, t;
 
-int AudioRecordQueue::available(void)
-{
-	uint32_t h, t;
-
-	h = head;
-	t = tail;
-	if (h >= t) return h - t;
-	return 53 + h - t;
+  h = head;
+  t = tail;
+  if (h >= t) return h - t;
+  return 53 + h - t;
 }
 
-void AudioRecordQueue::clear(void)
-{
-	uint32_t t;
+void AudioRecordQueue::clear(void) {
+  uint32_t t;
 
-	if (userblock) {
-		release(userblock);
-		userblock = NULL;
-	}
-	t = tail;
-	while (t != head) {
-		if (++t >= 53) t = 0;
-		release(queue[t]);
-	}
-	tail = t;
+  if (userblock) {
+    release(userblock);
+    userblock = NULL;
+  }
+  t = tail;
+  while (t != head) {
+    if (++t >= 53) t = 0;
+    release(queue[t]);
+  }
+  tail = t;
 }
 
-int16_t * AudioRecordQueue::readBuffer(void)
-{
-	uint32_t t;
+int16_t *AudioRecordQueue::readBuffer(void) {
+  uint32_t t;
 
-	if (userblock) return NULL;
-	t = tail;
-	if (t == head) return NULL;
-	if (++t >= 53) t = 0;
-	userblock = queue[t];
-	tail = t;
-	return userblock->data;
+  if (userblock) return NULL;
+  t = tail;
+  if (t == head) return NULL;
+  if (++t >= 53) t = 0;
+  userblock = queue[t];
+  tail = t;
+  return userblock->data;
 }
 
-void AudioRecordQueue::freeBuffer(void)
-{
-	if (userblock == NULL) return;
-	release(userblock);
-	userblock = NULL;
+void AudioRecordQueue::freeBuffer(void) {
+  if (userblock == NULL) return;
+  release(userblock);
+  userblock = NULL;
 }
 
-void AudioRecordQueue::update(void)
-{
-	audio_block_t *block;
-	uint32_t h;
+void AudioRecordQueue::update(void) {
+  audio_block_t *block;
+  uint32_t h;
 
-	block = receiveReadOnly();
-	if (!block) return;
-	if (!enabled) {
-		release(block);
-		return;
-	}
-	h = head + 1;
-	if (h >= 53) h = 0;
-	if (h == tail) {
-		release(block);
-	} else {
-		queue[h] = block;
-		head = h;
-	}
+  block = receiveReadOnly();
+  if (!block) return;
+  if (!enabled) {
+    release(block);
+    return;
+  }
+  h = head + 1;
+  if (h >= 53) h = 0;
+  if (h == tail) {
+    release(block);
+  } else {
+    queue[h] = block;
+    head = h;
+  }
 }
-
-

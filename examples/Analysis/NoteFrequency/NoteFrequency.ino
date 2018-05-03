@@ -17,14 +17,19 @@
  6 1047  1109  1175  1245  1319  1397  1480  1568  1661  1760  1865  1976
  7 2093  2217  2349  2489  2637  2794  2960  3136  3322  3520  3729  3951
  8 4186  4435  4699  4978  5274  5588  5920  6272  6645  7040  7459  7902
- 
- Guitar strings are E2=82.41Hz, A2=110Hz, D3=146.8Hz, G3=196Hz, B3=246.9Hz, E4=329.6Hz
- 
- Bass strings are (5th string) B0=30.87Hz, (4th string) E1=41.20Hz, A1=55Hz, D2=73.42Hz, G2=98Hz
- 
- This example tests the yin algorithm with actual notes from nylon string guitar recorded
- as wav format at 16B @ 44100 samples/sec. Since the decay of the notes will be longer than what
- the teensy can store in flash these notes are truncated to ~120,000B or about 1/2 of the whole
+
+ Guitar strings are E2=82.41Hz, A2=110Hz, D3=146.8Hz, G3=196Hz, B3=246.9Hz,
+ E4=329.6Hz
+
+ Bass strings are (5th string) B0=30.87Hz, (4th string) E1=41.20Hz, A1=55Hz,
+ D2=73.42Hz, G2=98Hz
+
+ This example tests the yin algorithm with actual notes from nylon string guitar
+ recorded
+ as wav format at 16B @ 44100 samples/sec. Since the decay of the notes will be
+ longer than what
+ the teensy can store in flash these notes are truncated to ~120,000B or about
+ 1/2 of the whole
  signal.
  */
 #include <SerialFlash.h>
@@ -46,9 +51,9 @@
 #include "tuba_5.h"
 //---------------------------------------------------------------------------------------
 AudioAnalyzeNoteFrequency notefreq;
-AudioOutputAnalog         dac;
-AudioPlayMemory           wav_note;
-AudioMixer4               mixer;
+AudioOutputAnalog dac;
+AudioPlayMemory wav_note;
+AudioMixer4 mixer;
 //---------------------------------------------------------------------------------------
 AudioConnection patchCord0(wav_note, 0, mixer, 0);
 AudioConnection patchCord1(mixer, 0, notefreq, 0);
@@ -57,41 +62,41 @@ AudioConnection patchCord2(mixer, 0, dac, 0);
 IntervalTimer playNoteTimer;
 
 void playNote(void) {
-    if (!wav_note.isPlaying()) {
-        // Uncomment one of these sounds to test notefreq
-        wav_note.play(guitar_e2_note);
-        //wav_note.play(guitar_a2_note);
-        //wav_note.play(guitar_d3_note);
-        //wav_note.play(guitar_g3_note);
-        //wav_note.play(guitar_b3_note);
-        //wav_note.play(guitar_e4_note);
-        //wav_note.play(tuba_1);
-        //wav_note.play(tuba_2);
-        //wav_note.play(tuba_3);
-        //wav_note.play(tuba_4);
-        //wav_note.play(tuba_5);
-        digitalWriteFast(LED_BUILTIN, !digitalReadFast(LED_BUILTIN));
-    }
+  if (!wav_note.isPlaying()) {
+    // Uncomment one of these sounds to test notefreq
+    wav_note.play(guitar_e2_note);
+    // wav_note.play(guitar_a2_note);
+    // wav_note.play(guitar_d3_note);
+    // wav_note.play(guitar_g3_note);
+    // wav_note.play(guitar_b3_note);
+    // wav_note.play(guitar_e4_note);
+    // wav_note.play(tuba_1);
+    // wav_note.play(tuba_2);
+    // wav_note.play(tuba_3);
+    // wav_note.play(tuba_4);
+    // wav_note.play(tuba_5);
+    digitalWriteFast(LED_BUILTIN, !digitalReadFast(LED_BUILTIN));
+  }
 }
 //---------------------------------------------------------------------------------------
 void setup() {
-    AudioMemory(30);
-    /*
-     *  Initialize the yin algorithm's absolute
-     *  threshold, this is good number.
-     */
-    notefreq.begin(.15);
-    pinMode(LED_BUILTIN, OUTPUT);
-    // Audio library isr allways gets priority
-    playNoteTimer.priority(144);
-    playNoteTimer.begin(playNote, 1000);
+  AudioMemory(30);
+  /*
+   *  Initialize the yin algorithm's absolute
+   *  threshold, this is good number.
+   */
+  notefreq.begin(.15);
+  pinMode(LED_BUILTIN, OUTPUT);
+  // Audio library isr allways gets priority
+  playNoteTimer.priority(144);
+  playNoteTimer.begin(playNote, 1000);
 }
 
 void loop() {
-    // read back fundamental frequency
-    if (notefreq.available()) {
-        float note = notefreq.read();
-        float prob = notefreq.probability();
-        Serial.printf("Note: %3.2f | Probability: %.2f\n", note, prob);
-    }
+  // read back fundamental frequency
+  if (notefreq.available()) {
+    float note = notefreq.read();
+    float prob = notefreq.probability();
+    Serial.printf("Note: %3.2f | Probability: %.2f\n", note, prob);
+  }
 }

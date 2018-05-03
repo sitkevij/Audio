@@ -15,14 +15,14 @@
 // Create the Audio components.  These should be created in the
 // order data flows, inputs/sources -> processing -> outputs
 //
-AudioInputAnalog         audioIn;
-AudioAnalyzeToneDetect   row1;     // 7 tone detectors are needed
-AudioAnalyzeToneDetect   row2;     // to receive DTMF dial tones
-AudioAnalyzeToneDetect   row3;
-AudioAnalyzeToneDetect   row4;
-AudioAnalyzeToneDetect   column1;
-AudioAnalyzeToneDetect   column2;
-AudioAnalyzeToneDetect   column3;
+AudioInputAnalog audioIn;
+AudioAnalyzeToneDetect row1;  // 7 tone detectors are needed
+AudioAnalyzeToneDetect row2;  // to receive DTMF dial tones
+AudioAnalyzeToneDetect row3;
+AudioAnalyzeToneDetect row4;
+AudioAnalyzeToneDetect column1;
+AudioAnalyzeToneDetect column2;
+AudioAnalyzeToneDetect column3;
 
 // Create Audio connections between the components
 //
@@ -35,23 +35,22 @@ AudioConnection patchCord6(audioIn, 0, column2, 0);
 AudioConnection patchCord7(audioIn, 0, column3, 0);
 
 // pins where the 7 segment LEDs are connected
-const int sevenseg_a = 17;   //  aaa
-const int sevenseg_b = 9;    // f   b
-const int sevenseg_c = 11;   // f   b
-const int sevenseg_d = 12;   //  ggg
-const int sevenseg_e = 14;   // e   c
-const int sevenseg_f = 15;   // e   c
-const int sevenseg_g = 10;   //  ddd
-
+const int sevenseg_a = 17;  //  aaa
+const int sevenseg_b = 9;   // f   b
+const int sevenseg_c = 11;  // f   b
+const int sevenseg_d = 12;  //  ggg
+const int sevenseg_e = 14;  // e   c
+const int sevenseg_f = 15;  // e   c
+const int sevenseg_g = 10;  //  ddd
 
 void setup() {
   // Audio connections require memory to work.  For more
   // detailed information, see the MemoryAndCpuUsage example
   AudioMemory(3);
-  
-  //while (!Serial) ;
-  //delay(100);
-  
+
+  // while (!Serial) ;
+  // delay(100);
+
   // Configure the tone detectors with the frequency and number
   // of cycles to match.  These numbers were picked for match
   // times of approx 30 ms.  Longer times are more precise.
@@ -62,7 +61,7 @@ void setup() {
   column1.frequency(1209, 36);
   column2.frequency(1336, 40);
   column3.frequency(1477, 44);
-  
+
   // The 7 segment display is "common anode), where the
   // common pin connects to +3.3V.  LOW turns the LED on
   // and HIGH turns the LED off.  If you use a common
@@ -89,7 +88,7 @@ const float column_threshold = 0.2;
 
 void loop() {
   float r1, r2, r3, r4, c1, c2, c3;
-  char digit=0;
+  char digit = 0;
 
   // read all seven tone detectors
   r1 = row1.read();
@@ -146,7 +145,7 @@ void loop() {
       digitalWrite(sevenseg_f, HIGH);
       digitalWrite(sevenseg_g, LOW);
     }
-  } else if (r2 >= row_threshold) { 
+  } else if (r2 >= row_threshold) {
     if (c1 > column_threshold) {
       digit = '4';
       digitalWrite(sevenseg_a, HIGH);
@@ -175,7 +174,7 @@ void loop() {
       digitalWrite(sevenseg_f, LOW);
       digitalWrite(sevenseg_g, LOW);
     }
-  } else if (r3 >= row_threshold) { 
+  } else if (r3 >= row_threshold) {
     if (c1 > column_threshold) {
       digit = '7';
       digitalWrite(sevenseg_a, LOW);
@@ -204,7 +203,7 @@ void loop() {
       digitalWrite(sevenseg_f, LOW);
       digitalWrite(sevenseg_g, LOW);
     }
-  } else if (r4 >= row_threshold) { 
+  } else if (r4 >= row_threshold) {
     if (c1 > column_threshold) {
       digit = '*';
       digitalWrite(sevenseg_a, HIGH);
@@ -244,13 +243,11 @@ void loop() {
 
   // uncomment these lines to see how much CPU time
   // the tone detectors and audio library are using
-  //Serial.print("CPU=");
-  //Serial.print(AudioProcessorUsage());
-  //Serial.print("%, max=");
-  //Serial.print(AudioProcessorUsageMax());
-  //Serial.print("%   ");
+  // Serial.print("CPU=");
+  // Serial.print(AudioProcessorUsage());
+  // Serial.print("%, max=");
+  // Serial.print(AudioProcessorUsageMax());
+  // Serial.print("%   ");
 
   delay(25);
 }
-
-

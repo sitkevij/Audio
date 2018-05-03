@@ -18,19 +18,19 @@
 #include <SerialFlash.h>
 
 const int myInput = AUDIO_INPUT_LINEIN;
-//const int myInput = AUDIO_INPUT_MIC;
+// const int myInput = AUDIO_INPUT_MIC;
 
 // Create the Audio components.  These should be created in the
 // order data flows, inputs/sources -> processing -> outputs
 //
-AudioInputI2S          audioInput;         // audio shield: mic or line-in
+AudioInputI2S audioInput;  // audio shield: mic or line-in
 AudioSynthWaveformSine sinewave;
-AudioAnalyzeFFT1024    myFFT;
-AudioOutputI2S         audioOutput;        // audio shield: headphones & line-out
+AudioAnalyzeFFT1024 myFFT;
+AudioOutputI2S audioOutput;  // audio shield: headphones & line-out
 
 // Connect either the live input or synthesized sine wave
 AudioConnection patchCord1(audioInput, 0, myFFT, 0);
-//AudioConnection patchCord1(sinewave, 0, myFFT, 0);
+// AudioConnection patchCord1(sinewave, 0, myFFT, 0);
 
 AudioControlSGTL5000 audioShield;
 
@@ -46,7 +46,7 @@ void setup() {
 
   // Configure the window algorithm to use
   myFFT.windowFunction(AudioWindowHanning1024);
-  //myFFT.windowFunction(NULL);
+  // myFFT.windowFunction(NULL);
 
   // Create a synthetic sine wave, for testing
   // To use this, edit the connections above
@@ -62,17 +62,15 @@ void loop() {
     // each time new FFT data is available
     // print it all to the Arduino Serial Monitor
     Serial.print("FFT: ");
-    for (i=0; i<40; i++) {
+    for (i = 0; i < 40; i++) {
       n = myFFT.read(i);
       if (n >= 0.01) {
         Serial.print(n);
         Serial.print(" ");
       } else {
-        Serial.print("  -  "); // don't print "0.00"
+        Serial.print("  -  ");  // don't print "0.00"
       }
     }
     Serial.println();
   }
 }
-
-

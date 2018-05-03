@@ -14,19 +14,20 @@
 #include <SD.h>
 #include <SerialFlash.h>
 
-AudioSynthWaveformSine   sine2;
-AudioSynthWaveformSine   sine1;
-AudioOutputI2S           i2s1;
-AudioConnection          patchCord1(sine2, 0, i2s1, 0);
-AudioConnection          patchCord2(sine1, 0, i2s1, 1);
-AudioControlAK4558       ak4558;
+AudioSynthWaveformSine sine2;
+AudioSynthWaveformSine sine1;
+AudioOutputI2S i2s1;
+AudioConnection patchCord1(sine2, 0, i2s1, 0);
+AudioConnection patchCord2(sine1, 0, i2s1, 1);
+AudioControlAK4558 ak4558;
 
 int phase = 0;
 
 void setup() {
   // put your setup code here, to run once:
   AudioMemory(12);
-  while (!Serial);
+  while (!Serial)
+    ;
   ak4558.enable();
   ak4558.enableOut();
   AudioNoInterrupts();
@@ -38,10 +39,10 @@ void setup() {
 }
 
 void loop() {
-	phase+=10;
-	if (phase==360) phase=0;
-	AudioNoInterrupts();
-	sine2.phase(phase);
-	AudioInterrupts();
-	delay(250);
+  phase += 10;
+  if (phase == 360) phase = 0;
+  AudioNoInterrupts();
+  sine2.phase(phase);
+  AudioInterrupts();
+  delay(250);
 }

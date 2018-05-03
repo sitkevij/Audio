@@ -13,7 +13,8 @@
  * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice, development funding notice, and this permission
- * notice shall be included in all copies or substantial portions of the Software.
+ * notice shall be included in all copies or substantial portions of the
+ *Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -31,31 +32,32 @@
 #include "AudioStream.h"
 #include "SPI.h"
 
-static inline void AudioStartUsingSPI(void) __attribute__((always_inline, unused));
-static inline void AudioStopUsingSPI(void) __attribute__((always_inline, unused));
+static inline void AudioStartUsingSPI(void)
+    __attribute__((always_inline, unused));
+static inline void AudioStopUsingSPI(void)
+    __attribute__((always_inline, unused));
 
 #ifdef SPI_HAS_NOTUSINGINTERRUPT
 
 extern unsigned short AudioUsingSPICount;
 
 static inline void AudioStartUsingSPI(void) {
-	SPI.usingInterrupt(IRQ_SOFTWARE);
-	AudioUsingSPICount++;
+  SPI.usingInterrupt(IRQ_SOFTWARE);
+  AudioUsingSPICount++;
 }
 
 static inline void AudioStopUsingSPI(void) {
-	if (AudioUsingSPICount == 0 || --AudioUsingSPICount == 0)
-		SPI.notUsingInterrupt(IRQ_SOFTWARE);
+  if (AudioUsingSPICount == 0 || --AudioUsingSPICount == 0)
+    SPI.notUsingInterrupt(IRQ_SOFTWARE);
 }
 
 #else
 
 static inline void AudioStartUsingSPI(void) {
-	SPI.usingInterrupt(IRQ_SOFTWARE);
+  SPI.usingInterrupt(IRQ_SOFTWARE);
 }
 
-static inline void AudioStopUsingSPI(void) {
-}
+static inline void AudioStopUsingSPI(void) {}
 
 #endif
 

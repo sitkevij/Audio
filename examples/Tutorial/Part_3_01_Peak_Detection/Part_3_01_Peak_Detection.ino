@@ -2,21 +2,17 @@
 //
 // http://www.pjrc.com/store/audio_tutorial_kit.html
 // https://hackaday.io/project/8292-microcontroller-audio-workshop-had-supercon-2015
-// 
+//
 // Part 3-1: Peak Detection
-
 
 ///////////////////////////////////
 // copy the Design Tool code here
 ///////////////////////////////////
 
-
-
-
 // Use these with the Teensy Audio Shield
-#define SDCARD_CS_PIN    10
-#define SDCARD_MOSI_PIN  7
-#define SDCARD_SCK_PIN   14
+#define SDCARD_CS_PIN 10
+#define SDCARD_MOSI_PIN 7
+#define SDCARD_SCK_PIN 14
 
 // Use these with the Teensy 3.5 & 3.6 SD card
 //#define SDCARD_CS_PIN    BUILTIN_SDCARD
@@ -44,20 +40,21 @@ void setup() {
   delay(1000);
 }
 
-// for best effect make your terminal/monitor a minimum of 62 chars wide and as high as you can.
+// for best effect make your terminal/monitor a minimum of 62 chars wide and as
+// high as you can.
 
 elapsedMillis msecs;
 
 void loop() {
   if (playSdWav1.isPlaying() == false) {
     Serial.println("Start playing");
-    //playSdWav1.play("SDTEST1.WAV");
+    // playSdWav1.play("SDTEST1.WAV");
     playSdWav1.play("SDTEST2.WAV");
-    //playSdWav1.play("SDTEST3.WAV");
-    //playSdWav1.play("SDTEST4.WAV");
-    delay(10); // wait for library to parse WAV info
+    // playSdWav1.play("SDTEST3.WAV");
+    // playSdWav1.play("SDTEST4.WAV");
+    delay(10);  // wait for library to parse WAV info
   }
-  
+
   if (msecs > 40) {
     if (peak1.available() && peak2.available()) {
       msecs = 0;
@@ -66,14 +63,14 @@ void loop() {
       int leftPeak = leftNumber * 30.0;
       int rightPeak = rightNumber * 30.0;
       int count;
-      for (count=0; count < 30-leftPeak; count++) {
+      for (count = 0; count < 30 - leftPeak; count++) {
         Serial.print(" ");
       }
       while (count++ < 30) {
         Serial.print("<");
       }
       Serial.print("||");
-      for (count=0; count < rightPeak; count++) {
+      for (count = 0; count < rightPeak; count++) {
         Serial.print(">");
       }
       while (count++ < 30) {

@@ -2,7 +2,7 @@
 //
 // http://www.pjrc.com/store/audio_tutorial_kit.html
 // https://hackaday.io/project/8292-microcontroller-audio-workshop-had-supercon-2015
-// 
+//
 // Part 3-2: Fourier Transform
 
 #include <Bounce.h>
@@ -11,19 +11,14 @@ Bounce button0 = Bounce(0, 15);
 Bounce button1 = Bounce(1, 15);  // 15 = 15 ms debounce time
 Bounce button2 = Bounce(2, 15);
 
-
-
 ///////////////////////////////////
 // copy the Design Tool code here
 ///////////////////////////////////
 
-
-
-
 // Use these with the Teensy Audio Shield
-#define SDCARD_CS_PIN    10
-#define SDCARD_MOSI_PIN  7
-#define SDCARD_SCK_PIN   14
+#define SDCARD_CS_PIN 10
+#define SDCARD_MOSI_PIN 7
+#define SDCARD_SCK_PIN 14
 
 // Use these with the Teensy 3.5 & 3.6 SD card
 //#define SDCARD_CS_PIN    BUILTIN_SDCARD
@@ -61,46 +56,39 @@ void setup() {
   // fft1024_1.windowFunction(AudioWindowFlattop1024);
   delay(1000);
   playSdWav1.play("SDTEST1.WAV");
-
 }
 
-
 int fileNumber = 0;
-const char * filenames[4] = {
-  "SDTEST1.WAV", "SDTEST2.WAV", "SDTEST3.WAV", "SDTEST4.WAV"
-};
+const char* filenames[4] = {"SDTEST1.WAV", "SDTEST2.WAV", "SDTEST3.WAV",
+                            "SDTEST4.WAV"};
 
 int noteNumber = 0;
 const float noteFrequency[12] = {
-  220.00,  // A3
-  233.08,  // A#3
-  246.94,  // B3
-  261.63,  // C4
-  277.18,  // C#4
-  293.66,  // D4
-  311.13,  // D#4
-  329.63,  // E4
-  349.23,  // F4
-  369.99,  // F#4
-  392.00,  // G4
-  415.30   // G#4
+    220.00,  // A3
+    233.08,  // A#3
+    246.94,  // B3
+    261.63,  // C4
+    277.18,  // C#4
+    293.66,  // D4
+    311.13,  // D#4
+    329.63,  // E4
+    349.23,  // F4
+    369.99,  // F#4
+    392.00,  // G4
+    415.30   // G#4
 };
 
-
-
 void loop() {
-
   // print Fourier Transform data to the Arduino Serial Monitor
   if (fft1024_1.available()) {
-    
     Serial.print("FFT: ");
-    for (int i=0; i<30; i++) {  // 0-25  -->  DC to 1.25 kHz
+    for (int i = 0; i < 30; i++) {  // 0-25  -->  DC to 1.25 kHz
       float n = fft1024_1.read(i);
       printNumber(n);
     }
     Serial.println();
   }
-  
+
   button0.update();
   button1.update();
   button2.update();
@@ -142,43 +130,40 @@ void loop() {
   if (button2.risingEdge()) {
     waveform1.amplitude(0);
   }
-/*
-  if (fft1024_1.available()) {
-    // each time new FFT data is available
-    // print to the Arduino Serial Monitor
-    Serial.print("FFT: ");
-    printNumber(fft1024_1.read(0));
-    printNumber(fft1024_1.read(1));
-    printNumber(fft1024_1.read(2,3));
-    printNumber(fft1024_1.read(4,6));
-    printNumber(fft1024_1.read(7,10));
-    printNumber(fft1024_1.read(11,15));
-    printNumber(fft1024_1.read(16,22));
-    printNumber(fft1024_1.read(23,32));
-    printNumber(fft1024_1.read(33,46));
-    printNumber(fft1024_1.read(47,66));
-    printNumber(fft1024_1.read(67,93));
-    printNumber(fft1024_1.read(94,131));
-    printNumber(fft1024_1.read(132,184));
-    printNumber(fft1024_1.read(185,257));
-    printNumber(fft1024_1.read(258,359));
-    printNumber(fft1024_1.read(360,511));
-    Serial.println();
-  }
-*/
-
+  /*
+    if (fft1024_1.available()) {
+      // each time new FFT data is available
+      // print to the Arduino Serial Monitor
+      Serial.print("FFT: ");
+      printNumber(fft1024_1.read(0));
+      printNumber(fft1024_1.read(1));
+      printNumber(fft1024_1.read(2,3));
+      printNumber(fft1024_1.read(4,6));
+      printNumber(fft1024_1.read(7,10));
+      printNumber(fft1024_1.read(11,15));
+      printNumber(fft1024_1.read(16,22));
+      printNumber(fft1024_1.read(23,32));
+      printNumber(fft1024_1.read(33,46));
+      printNumber(fft1024_1.read(47,66));
+      printNumber(fft1024_1.read(67,93));
+      printNumber(fft1024_1.read(94,131));
+      printNumber(fft1024_1.read(132,184));
+      printNumber(fft1024_1.read(185,257));
+      printNumber(fft1024_1.read(258,359));
+      printNumber(fft1024_1.read(360,511));
+      Serial.println();
+    }
+  */
 }
 
-
 void printNumber(float n) {
-  
   if (n >= 0.004) {
     Serial.print(n, 3);
     Serial.print(" ");
   } else {
-    Serial.print("   -  "); // don't print "0.00"
+    Serial.print("   -  ");  // don't print "0.00"
   }
-  
+
   /*
   if (n > 0.25) {
     Serial.print("***** ");

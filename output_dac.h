@@ -13,7 +13,8 @@
  * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice, development funding notice, and this permission
- * notice shall be included in all copies or substantial portions of the Software.
+ * notice shall be included in all copies or substantial portions of the
+ *Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -31,26 +32,26 @@
 #include "AudioStream.h"
 #include "DMAChannel.h"
 
-class AudioOutputAnalog : public AudioStream
-{
-public:
-	AudioOutputAnalog(void) : AudioStream(1, inputQueueArray) { begin(); }
-	virtual void update(void);
-	void begin(void);
-	void analogReference(int ref);
-private:
-	static audio_block_t *block_left_1st;
-	static audio_block_t *block_left_2nd;
-	static bool update_responsibility;
-	audio_block_t *inputQueueArray[1];
+class AudioOutputAnalog : public AudioStream {
+ public:
+  AudioOutputAnalog(void) : AudioStream(1, inputQueueArray) { begin(); }
+  virtual void update(void);
+  void begin(void);
+  void analogReference(int ref);
+
+ private:
+  static audio_block_t *block_left_1st;
+  static audio_block_t *block_left_2nd;
+  static bool update_responsibility;
+  audio_block_t *inputQueueArray[1];
 #if defined(KINETISK)
-	static DMAChannel dma;
-	static void isr(void);
+  static DMAChannel dma;
+  static void isr(void);
 #elif defined(KINETISL)
-	static DMAChannel dma1;
-	static DMAChannel dma2;
-	static void isr1(void);
-	static void isr2(void);
+  static DMAChannel dma1;
+  static DMAChannel dma2;
+  static void isr1(void);
+  static void isr2(void);
 #endif
 };
 

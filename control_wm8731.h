@@ -13,7 +13,8 @@
  * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice, development funding notice, and this permission
- * notice shall be included in all copies or substantial portions of the Software.
+ * notice shall be included in all copies or substantial portions of the
+ *Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -29,23 +30,22 @@
 
 #include "AudioControl.h"
 
-class AudioControlWM8731 : public AudioControl
-{
-public:
-	bool enable(void);
-	bool disable(void) { return false; }
-	bool volume(float n) { return volumeInteger(n * 80.0 + 47.499); }
-	bool inputLevel(float n); // range: 0.0f to 1.0f
-	bool inputSelect(int n) { return false; }
-protected:
-	bool write(unsigned int reg, unsigned int val);
-	bool volumeInteger(unsigned int n); // range: 0x2F to 0x7F
+class AudioControlWM8731 : public AudioControl {
+ public:
+  bool enable(void);
+  bool disable(void) { return false; }
+  bool volume(float n) { return volumeInteger(n * 80.0 + 47.499); }
+  bool inputLevel(float n);  // range: 0.0f to 1.0f
+  bool inputSelect(int n) { return false; }
+
+ protected:
+  bool write(unsigned int reg, unsigned int val);
+  bool volumeInteger(unsigned int n);  // range: 0x2F to 0x7F
 };
 
-class AudioControlWM8731master : public AudioControlWM8731
-{
-public:
-	bool enable(void);
+class AudioControlWM8731master : public AudioControlWM8731 {
+ public:
+  bool enable(void);
 };
 
 #endif

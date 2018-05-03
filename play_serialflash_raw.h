@@ -1,6 +1,7 @@
 /* Audio Library for Teensy 3.X
  * Copyright (c) 2014, Paul Stoffregen, paul@pjrc.com
- * Modified to use SerialFlash instead of SD library by Wyatt Olson <wyatt@digitalcave.ca>
+ * Modified to use SerialFlash instead of SD library by Wyatt Olson
+ *<wyatt@digitalcave.ca>
  *
  * Development of this audio library was funded by PJRC.COM, LLC by sales of
  * Teensy and Audio Adaptor boards.  Please support PJRC's efforts to develop
@@ -14,7 +15,8 @@
  * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice, development funding notice, and this permission
- * notice shall be included in all copies or substantial portions of the Software.
+ * notice shall be included in all copies or substantial portions of the
+ *Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -32,22 +34,22 @@
 #include <AudioStream.h>
 #include <SerialFlash.h>
 
-class AudioPlaySerialflashRaw : public AudioStream
-{
-public:
-	AudioPlaySerialflashRaw(void) : AudioStream(0, NULL) { begin(); }
-	void begin(void);
-	bool play(const char *filename);
-	void stop(void);
-	bool isPlaying(void) { return playing; }
-	uint32_t positionMillis(void);
-	uint32_t lengthMillis(void);
-	virtual void update(void);
-private:
-	SerialFlashFile rawfile;
-	uint32_t file_size;
-	volatile uint32_t file_offset;
-	volatile bool playing;
+class AudioPlaySerialflashRaw : public AudioStream {
+ public:
+  AudioPlaySerialflashRaw(void) : AudioStream(0, NULL) { begin(); }
+  void begin(void);
+  bool play(const char *filename);
+  void stop(void);
+  bool isPlaying(void) { return playing; }
+  uint32_t positionMillis(void);
+  uint32_t lengthMillis(void);
+  virtual void update(void);
+
+ private:
+  SerialFlashFile rawfile;
+  uint32_t file_size;
+  volatile uint32_t file_offset;
+  volatile bool playing;
 };
 
 #endif
